@@ -1,0 +1,79 @@
+-- References to the Remotes
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Packages = ReplicatedStorage:WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("kumarion_knit-rojo@0.2.0"):WaitForChild("knit-rojo"):WaitForChild("Services")
+
+local InventoryRF = Packages:WaitForChild("InventoryService"):WaitForChild("RF"):WaitForChild("Inventory")
+local PlaceBuildRF = Packages:WaitForChild("PlacementService"):WaitForChild("RF"):WaitForChild("PlaceBuild")
+
+-- References to the local player for teleportation
+local Player = game:GetService("Players").LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+
+-- Configuration for the 25x25 grid
+local GRID_SIZE = 25
+local STEP = 3 
+
+-- ==========================================
+-- 📍 MAP CALIBRATED COORDINATES
+-- ==========================================
+local CENTER_X = -49.5
+local CENTER_Z = 49.5
+
+-- Math to find the bottom-left starting corner of the 25x25 wall
+local START_X = CENTER_X
+local START_Y = 1.5    -- Sits perfectly on the grass floor
+local START_Z = CENTER_Z - (((GRID_SIZE - 1) / 2) * STEP)
+
+local defaultCFrame = CFrame.new(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+-- ==========================================
+-- 🌀 PHASE 1: TELEPORT TO CENTER
+-- ==========================================
+print("Teleporting to the center of the screen...")
+-- Sets your position slightly in front of the building line (X + 6) so you don't get stuck inside the blocks
+HumanoidRootPart.CFrame = CFrame.new(CENTER_X + 6, 4.5, CENTER_Z)
+task.wait(0.2) -- Tiny pause to let physics stabilize after teleporting
+
+-- ==========================================
+-- 🧱 PHASE 2: BUILD SCREEN
+-- ==========================================
+print("Building Black & White chessboard screen...")
+
+-- Loop row-by-row (Vertical)
+for row = 1, GRID_SIZE do
+	local currentY = START_Y + ((row - 1) * STEP)
+	
+	-- Loop column-by-column (Horizontal)
+	for col = 1, GRID_SIZE do
+		local currentZ = START_Z + ((col - 1) * STEP)
+		
+		-- Alternating chessboard pattern math (Changed "Red" to "White")
+		local targetColor = ((row + col) % 2 == 0) and "White" or "Black"
+		
+		-- 1. Equip the required pixel color
+		local colorArgs = {
+			"Equip",
+			"SelectedColor",
+			targetColor
+		}
+		InventoryRF:InvokeServer(unpack(colorArgs))
+		
+		-- 2. Place the block at the calibrated grid coordinate
+		local buildArgs = {
+			targetColor,
+			START_X,
+			currentY,
+			currentZ,
+			defaultCFrame,
+			1,
+			1
+		}
+		PlaceBuildRF:InvokeServer(unpack(buildArgs))
+		
+		-- 3. Optimized hyper-speed delay (0.005 seconds)
+		task.wait(0.005)
+	end
+end
+
+print("High-speed Black & White screen complete!")
