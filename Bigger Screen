@@ -1,0 +1,78 @@
+-- References to the Remotes
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Packages = ReplicatedStorage:WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("kumarion_knit-rojo@0.2.0"):WaitForChild("knit-rojo"):WaitForChild("Services")
+
+local InventoryRF = Packages:WaitForChild("InventoryService"):WaitForChild("RF"):WaitForChild("Inventory")
+local PlaceBuildRF = Packages:WaitForChild("PlacementService"):WaitForChild("RF"):WaitForChild("PlaceBuild")
+
+-- References to the local player for proximity teleportation
+local Player = game:GetService("Players").LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+
+-- Configuration for the massive 75x75 grid
+local GRID_SIZE = 75
+local STEP = 3 
+
+-- ==========================================
+-- 📍 MAP CALIBRATED COORDINATES
+-- ==========================================
+local CENTER_X = -49.5
+local CENTER_Z = 49.5
+
+-- Math to dynamically calculate the new bottom-left starting corner for 75x75
+local START_X = CENTER_X
+local START_Y = 1.5    -- Sits perfectly on the grass floor
+local START_Z = CENTER_Z - (((GRID_SIZE - 1) / 2) * STEP)
+
+local defaultCFrame = CFrame.new(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+print("Starting massive 75x75 Proximity-Calibrated Chessboard...")
+
+-- Loop row-by-row (Vertical)
+for row = 1, GRID_SIZE do
+	local currentY = START_Y + ((row - 1) * STEP)
+	
+	-- 🏁 ROW START TELEPORT: Teleport to the beginning of the row FIRST
+	local firstZ = START_Z
+	HumanoidRootPart.CFrame = CFrame.new(START_X + 4, currentY + 2, firstZ) * CFrame.Angles(0, math.rad(90), 0)
+	
+	-- ⏳ ROW START GUARD: Safe delay to let the server realize you are here before placing any blocks
+	task.wait(0.1)
+	
+	-- Loop column-by-column (Horizontal)
+	for col = 1, GRID_SIZE do
+		local currentZ = START_Z + ((col - 1) * STEP)
+		
+		-- Alternating chessboard pattern math
+		local targetColor = ((row + col) % 2 == 0) and "White" or "Black"
+		
+		-- 1. Fast Teleport (Updates position smoothly along the row line)
+		HumanoidRootPart.CFrame = CFrame.new(START_X + 4, currentY + 2, currentZ) * CFrame.Angles(0, math.rad(90), 0)
+		
+		-- 2. Equip the required pixel color
+		local colorArgs = {
+			"Equip",
+			"SelectedColor",
+			targetColor
+		}
+		InventoryRF:InvokeServer(unpack(colorArgs))
+		
+		-- 3. Place the block at the calibrated grid coordinate
+		local buildArgs = {
+			targetColor,
+			START_X,
+			currentY,
+			currentZ,
+			defaultCFrame,
+			1,
+			1
+		}
+		PlaceBuildRF:InvokeServer(unpack(buildArgs))
+		
+		-- 4. High-speed network delay
+		task.wait(0.005)
+	end
+end
+
+print("Flawless, proximity-bypassed 75x75 chessboard complete!")
