@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>75×75 Matrix Character Converter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#111114;
+    --panel:#191a1f;
+    --line:#2a2b32;
+    --ink:#eae7e0;
+    --dim:#8b8c94;
+    --accent:#3ddc97;
+    --accent-dim:#2a9c6d;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'JetBrains Mono', monospace;
+    min-height:100vh;
+    padding:16px 16px 60px;
+  }
+  .wrap{max-width:920px;margin:0 auto;}
+  header{margin-bottom:22px;}
+  h1{
+    font-family:'Press Start 2P', monospace;
+    font-size:14px;
+    line-height:1.6;
+    letter-spacing:0.5px;
+    margin:0 0 10px;
+    color:var(--ink);
+  }
+  h1 span{color:var(--accent);}
+  header p{margin:0;color:var(--dim);font-size:12px;max-width:56ch;}
+
+  .layout{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:18px;
+  }
+  @media(min-width:760px){
+    .layout{grid-template-columns: 300px 1fr;}
+  }
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:16px;
+  }
+  .panel + .panel{margin-top:16px;}
+
+  .drop{
+    border:1px dashed var(--line);
+    border-radius:2px;
+    padding:26px 14px;
+    text-align:center;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .drop:hover, .drop.drag{
+    border-color:var(--accent);
+    background:#151920;
+  }
+  .drop input{display:none;}
+  .drop .icon{font-size:22px;color:var(--accent);margin-bottom:8px;}
+  .drop .txt{font-size:12.5px;color:var(--dim);}
+  .drop .txt b{color:var(--ink);}
+
+  .field{margin-top:16px;}
+  .field label{
+    display:flex;justify-content:space-between;
+    font-size:11px;color:var(--dim);margin-bottom:6px;
+    text-transform:uppercase;letter-spacing:0.06em;
+  }
+  .field label span.val{color:var(--accent);}
+  select{
+    width:100%;background:#101115;color:var(--ink);
+    border:1px solid var(--line);padding:7px 8px;
+    font-family:inherit;font-size:12.5px;border-radius:2px;
+  }
+
+  button{
+    font-family:inherit;
+    font-size:12px;
+    letter-spacing:0.03em;
+    padding:10px 14px;
+    border-radius:2px;
+    border:1px solid var(--line);
+    background:#101115;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  button:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+  button:disabled{opacity:0.35;cursor:not-allowed;}
+  
+  button.primary{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#0b1410;
+    font-weight:700;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  button.primary:hover:not(:disabled){color:#0b1410;border-color:var(--accent-dim);background:var(--accent-dim);}
+
+  .stage{
+    display:flex;flex-direction:column;align-items:center;
+    gap:14px;
+  }
+  .canvases{
+    display:flex;gap:22px;flex-wrap:wrap;justify-content:center;align-items:flex-start;
+  }
+  .canvasblock{text-align:center;}
+  .canvasblock .cap{
+    font-size:10.5px;color:var(--dim);text-transform:uppercase;
+    letter-spacing:0.08em;margin-bottom:8px;
+  }
+  canvas{
+    image-rendering:pixelated;
+    border:1px solid var(--line);
+    background:#000;
+    max-width:100%;
+  }
+  #srcCanvas{width:150px;height:150px;}
+  #outCanvas{width:250px;height:250px;}
+
+  .empty{
+    color:var(--dim);font-size:12.5px;text-align:center;
+    padding:60px 20px;
+  }
+
+  .palette{
+    display:grid;grid-template-columns:repeat(6,1fr);gap:6px;margin-top:8px;
+  }
+  .swatch{
+    aspect-ratio:1;border-radius:2px;border:1px solid rgba(255,255,255,0.08);
+    position:relative;cursor:default;
+  }
+
+  .log{
+    margin-top:14px;
+    width: 100%;
+  }
+  .log textarea{
+    width:100%;height:250px;resize:vertical;
+    background:#101115;color:var(--accent);border:1px solid var(--line);
+    border-radius:2px;padding:8px;font-family:'JetBrains Mono', monospace;font-size:10px;line-height:1.4;
+  }
+  .log .cap{font-size:11px;color:var(--dim);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;}
+  .log .cap b{color:var(--ink);}
+
+  footer{margin-top:24px;color:var(--dim);font-size:11px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>75×75 <span>MATRIX</span> CONVERTER</h1>
+    <p>Converts your image into a perfect 75×75 grid and exports the data into clean alphabet character keys.</p>
+  </header>
+
+  <div class="layout">
+    <div class="col-left">
+      <div class="panel">
+        <div class="drop" id="drop">
+          <div class="icon">&#9635;</div>
+          <div class="txt"><b>Click to upload</b><br>or drag an image here</div>
+          <input type="file" id="fileInput" accept="image/*">
+        </div>
+
+        <div class="field">
+          <label>Dithering <span class="val" id="ditherLabel">On</span></label>
+          <select id="ditherSelect">
+            <option value="on">Floyd–Steinberg (on)</option>
+            <option value="off">Nearest color only (off)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="cap" style="font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">36-Color Palette</div>
+        <div class="palette" id="palette"></div>
+      </div>
+    </div>
+
+    <div class="col-right">
+      <div class="panel stage">
+        <div id="emptyState" class="empty">No image yet — upload one to see it converted here.</div>
+        <div class="canvases" id="canvasArea" style="display:none;">
+          <div class="canvasblock">
+            <div class="cap">Source (75×75)</div>
+            <canvas id="srcCanvas" width="75" height="75"></canvas>
+          </div>
+          <div class="canvasblock">
+            <div class="cap">Processed Result</div>
+            <canvas id="outCanvas" width="75" height="75"></canvas>
+          </div>
+        </div>
+
+        <div class="log" id="logArea" style="display:none;width:100%;">
+          <div class="cap"><b>Alphabet Data String Output</b></div>
+          <button class="primary" id="copyCodeBtn" disabled>Copy Data String</button>
+          <textarea id="logText" readonly></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>All processing happens locally in your browser.</footer>
+</div>
+
+<script>
+const PALETTE = [
+  ["White",        [255,255,255], "A"], ["Gray",         [128,128,128], "B"], ["Dark Gray",    [64,64,64],    "C"],
+  ["Black",        [0,0,0],       "D"], ["Red",          [255,0,0],       "E"], ["Dark Red",     [139,0,0],     "F"],
+  ["Orange-Red",   [255,69,0],    "G"], ["Orange",       [255,165,0],     "H"], ["Dark Orange",  [255,140,0],   "I"],
+  ["Light Gold",   [255,223,127], "J"], ["Yellow",       [255,255,0],     "K"], ["Yellow-Green", [154,205,50], "L"],
+  ["Pale Green",   [152,251,152], "M"], ["Lime Green",   [50,205,50],     "N"], ["Bright Green", [102,255,0],   "O"],
+  ["Green",        [0,128,0],     "P"], ["Dark Green",   [0,100,0],       "Q"], ["Forest Green", [34,139,34],  "R"],
+  ["Teal",         [0,128,128],   "S"], ["Dark Teal",    [0,64,64],       "T"], ["Cyan",         [0,255,255],   "U"],
+  ["Sky Blue",     [135,206,235], "V"], ["Blue",         [0,0,255],       "W"], ["Dark Blue",    [0,0,139],     "X"],
+  ["Indigo",       [75,0,130],    "Y"], ["Purple",       [128,0,128],     "Z"], ["Slate Blue",   [106,90,205],  "a"],
+  ["Pink",         [255,192,203], "b"], ["Deep Pink",    [255,20,147],    "c"], ["Hot Pink",     [255,105,180], "d"],
+  ["Rose Pink",    [255,102,170], "e"], ["Magenta",      [255,0,255],     "f"], ["Peach",        [255,218,185], "g"],
+  ["Tan",          [210,180,140], "h"], ["Brown",         [139,69,19],     "i"], ["Dark Brown",   [92,64,51],    "j"]
+];
+
+const GRID = 75;
+let lastResult = null;
+
+const paletteEl = document.getElementById('palette');
+PALETTE.forEach(([name, rgb]) => {
+  const d = document.createElement('div');
+  d.className = 'swatch';
+  d.style.background = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+  paletteEl.appendChild(d);
+});
+
+function nearestColor(r,g,b){
+  let bestI=0, bestD=Infinity;
+  for(let i=0;i<PALETTE.length;i++){
+    const [,p] = PALETTE[i];
+    const dr=r-p[0], dg=g-p[1], db=b-p[2];
+    const d=dr*dr+dg*dg+db*db;
+    if(d<bestD){bestD=d;bestI=i;}
+  }
+  return bestI;
+}
+
+function clamp(v){return v<0?0:v>255?255:v;}
+
+const drop = document.getElementById('drop');
+const fileInput = document.getElementById('fileInput');
+const emptyState = document.getElementById('emptyState');
+const canvasArea = document.getElementById('canvasArea');
+const logArea = document.getElementById('logArea');
+const srcCanvas = document.getElementById('srcCanvas');
+const outCanvas = document.getElementById('outCanvas');
+const logText = document.getElementById('logText');
+const ditherSelect = document.getElementById('ditherSelect');
+const ditherLabel = document.getElementById('ditherLabel');
+const copyCodeBtn = document.getElementById('copyCodeBtn');
+
+drop.addEventListener('click', () => fileInput.click());
+drop.addEventListener('dragover', e => {e.preventDefault(); drop.classList.add('drag');});
+drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
+drop.addEventListener('drop', e => {
+  e.preventDefault(); drop.classList.remove('drag');
+  if(e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', () => {
+  if(fileInput.files && fileInput.files[0]) handleFile(fileInput.files[0]);
+});
+ditherSelect.addEventListener('change', () => {
+  ditherLabel.textContent = ditherSelect.value === 'on' ? 'On' : 'Off';
+  if(window.__lastImg) processImage(window.__lastImg);
+});
+
+function handleFile(file){
+  if(!file.type.startsWith('image/')) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.onload = () => {
+      window.__lastImg = img;
+      processImage(img);
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function processImage(img){
+  emptyState.style.display = 'none';
+  canvasArea.style.display = 'flex';
+  logArea.style.display = 'block';
+
+  const side = Math.min(img.width, img.height);
+  const sx = (img.width - side)/2;
+  const sy = (img.height - side)/2;
+
+  const work = document.createElement('canvas');
+  work.width = GRID; work.height = GRID;
+  const wctx = work.getContext('2d');
+  wctx.imageSmoothingEnabled = true;
+  wctx.imageSmoothingQuality = 'high';
+  wctx.drawImage(img, sx, sy, side, side, 0, 0, GRID, GRID);
+
+  const sctx = srcCanvas.getContext('2d');
+  sctx.clearRect(0,0,GRID,GRID);
+  sctx.drawImage(work, 0, 0);
+
+  const imgData = wctx.getImageData(0,0,GRID,GRID);
+  const data = imgData.data;
+
+  const buf = new Float32Array(GRID*GRID*3);
+  for(let i=0;i<GRID*GRID;i++){
+    buf[i*3]   = data[i*4];
+    buf[i*3+1] = data[i*4+1];
+    buf[i*3+2] = data[i*4+2];
+  }
+
+  const useDither = ditherSelect.value === 'on';
+  const result = [];
+  for(let y=0;y<GRID;y++) result.push(new Array(GRID));
+
+  for(let y=0;y<GRID;y++){
+    for(let x=0;x<GRID;x++){
+      const i = y*GRID+x;
+      const r = buf[i*3], g = buf[i*3+1], b = buf[i*3+2];
+      const idx = nearestColor(r,g,b);
+      const [name, prgb, char] = PALETTE[idx];
+      result[y][x] = {char, rgb: prgb};
+
+      if(useDither){
+        const er = r - prgb[0];
+        const eg = g - prgb[1];
+        const eb = b - prgb[2];
+
+        const spread = (xx,yy,f) => {
+          if(xx>=0 && xx<GRID && yy>=0 && yy<GRID){
+            const j=(yy*GRID+xx)*3;
+            buf[j]   = clamp(buf[j]   + er*f);
+            buf[j+1] = clamp(buf[j+1] + eg*f);
+            buf[j+2] = clamp(buf[j+2] + eb*f);
+          }
+        };
+        spread(x+1,y,   7/16);
+        spread(x-1,y+1, 3/16);
+        spread(x,  y+1, 5/16);
+        spread(x+1,y+1, 1/16);
+      }
+    }
+  }
+
+  lastResult = result;
+
+  const octx = outCanvas.getContext('2d');
+  const outData = octx.createImageData(GRID, GRID);
+  for(let y=0;y<GRID;y++){
+    for(let x=0;x<GRID;x++){
+      const {rgb} = result[y][x];
+      const i = (y*GRID+x)*4;
+      outData.data[i]=rgb[0]; outData.data[i+1]=rgb[1]; outData.data[i+2]=rgb[2]; outData.data[i+3]=255;
+    }
+  }
+  octx.putImageData(outData, 0, 0);
+
+  buildLog();
+  copyCodeBtn.disabled = false;
+}
+
+function buildLog(){
+  const lines = [];
+  for(let y = GRID - 1; y >= 0; y--){
+    let rowChars = "";
+    for(let x = 0; x < GRID; x++){
+      rowChars += lastResult[y][x].char;
+    }
+    const isLast = (y === 0);
+    lines.push(`\t"${rowChars}"` + (isLast ? "" : " .."));
+  }
+  logText.value = lines.join("\n");
+}
+
+copyCodeBtn.addEventListener('click', () => {
+  logText.select();
+  document.execCommand('copy');
+  const oldText = copyCodeBtn.textContent;
+  copyCodeBtn.textContent = 'Copied!';
+  setTimeout(() => { copyCodeBtn.textContent = oldText; }, 1500);
+});
+</script>
+</body>
+</html>
