@@ -149,9 +149,10 @@
     width: 100%;
   }
   .log textarea{
-    width:100%;height:250px;resize:vertical;
+    width:100%;height:120px;resize:vertical;
     background:#101115;color:var(--accent);border:1px solid var(--line);
     border-radius:2px;padding:8px;font-family:'JetBrains Mono', monospace;font-size:10px;line-height:1.4;
+    word-break: break-all;
   }
   .log .cap{font-size:11px;color:var(--dim);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.06em;}
   .log .cap b{color:var(--ink);}
@@ -335,6 +336,7 @@ function processImage(img){
   const result = [];
   for(let y=0;y<GRID;y++) result.push(new Array(GRID));
 
+  // Process top-down standard for beautiful preview rendering
   for(let y=0;y<GRID;y++){
     for(let x=0;x<GRID;x++){
       const i = y*GRID+x;
@@ -366,6 +368,7 @@ function processImage(img){
 
   lastResult = result;
 
+  // Render processed output preview window properly
   const octx = outCanvas.getContext('2d');
   const outData = octx.createImageData(GRID, GRID);
   for(let y=0;y<GRID;y++){
@@ -381,17 +384,16 @@ function processImage(img){
   copyCodeBtn.disabled = false;
 }
 
+// 🛠️ CORRECT INVERTED STRING STREAM GENERATOR FOR ROBALOX COORDINATES
 function buildLog(){
-  const lines = [];
+  let singleStream = "";
+  // Map rows bottom-to-top into the raw data text string
   for(let y = GRID - 1; y >= 0; y--){
-    let rowChars = "";
     for(let x = 0; x < GRID; x++){
-      rowChars += lastResult[y][x].char;
+      singleStream += lastResult[y][x].char;
     }
-    const isLast = (y === 0);
-    lines.push(`\t"${rowChars}"` + (isLast ? "" : " .."));
   }
-  logText.value = lines.join("\n");
+  logText.value = singleStream;
 }
 
 copyCodeBtn.addEventListener('click', () => {
