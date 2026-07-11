@@ -217,19 +217,22 @@
 </div>
 
 <script>
+// ==========================================
+// 🎨 CORRECTED 36 GAME PALETTE DEFINITIONS
+// ==========================================
 const PALETTE = [
-  ["White",        [255,255,255], "A"], ["Gray",         [128,128,128], "B"], ["Dark Gray",    [64,64,64],    "C"],
-  ["Black",        [0,0,0],       "D"], ["Red",          [255,0,0],       "E"], ["Dark Red",     [139,0,0],     "F"],
-  ["Orange-Red",   [255,69,0],    "G"], ["Orange",       [255,165,0],     "H"], ["Dark Orange",  [255,140,0],   "I"],
-  ["Light Gold",   [255,223,127], "J"], ["Yellow",       [255,255,0],     "K"], ["Yellow-Green", [154,205,50], "L"],
-  ["Pale Green",   [152,251,152], "M"], ["Lime Green",   [50,205,50],     "N"], ["Bright Green", [102,255,0],   "O"],
-  ["Green",        [0,128,0],     "P"], ["Dark Green",   [0,100,0],       "Q"], ["Forest Green", [34,139,34],  "R"],
-  ["Teal",         [0,128,128],   "S"], ["Dark Teal",    [0,64,64],       "T"], ["Cyan",         [0,255,255],   "U"],
-  ["Sky Blue",     [135,206,235], "V"], ["Blue",         [0,0,255],       "W"], ["Dark Blue",    [0,0,139],     "X"],
-  ["Indigo",       [75,0,130],    "Y"], ["Purple",       [128,0,128],     "Z"], ["Slate Blue",   [106,90,205],  "a"],
-  ["Pink",         [255,192,203], "b"], ["Deep Pink",    [255,20,147],    "c"], ["Hot Pink",     [255,105,180], "d"],
-  ["Rose Pink",    [255,102,170], "e"], ["Magenta",      [255,0,255],     "f"], ["Peach",        [255,218,185], "g"],
-  ["Tan",          [210,180,140], "h"], ["Brown",         [139,69,19],     "i"], ["Dark Brown",   [92,64,51],    "j"]
+  ["White",            [255,255,255], "A"], ["Grey",             [128,128,128], "B"], ["Smokey Grey",       [75,75,75],    "C"],
+  ["Black",            [0,0,0],       "D"], ["Red",              [255,0,0],       "E"], ["Dark Red",          [139,0,0],     "F"],
+  ["Reddish Orange",   [255,69,0],    "G"], ["Orange",           [255,140,0],     "H"], ["Dark Orange",       [204,85,0],    "I"],
+  ["Yellowish Orange", [255,174,66],  "J"], ["Yellow",           [255,255,0],     "K"], ["Yellowish Green",   [154,205,50], "L"],
+  ["Light Green",      [144,238,144], "M"], ["Lime Green",       [50,205,50],     "N"], ["Bright Green",      [0,255,0],     "O"],
+  ["Green",            [0,128,0],     "P"], ["Dark Green",       [0,100,0],       "Q"], ["Forest Green",      [34,139,34],  "R"],
+  ["Blueish Green",    [0,168,143],   "S"], ["Teal",             [0,128,128],     "T"], ["Cyan",              [0,255,255],   "U"],
+  ["Sky Blue",         [135,206,235], "V"], ["Blue",             [0,0,255],       "W"], ["Dark Blue",         [0,0,139],     "X"],
+  ["Blueish Purple",   [112,41,216],  "Y"], ["Purple",           [128,0,128],     "Z"], ["Dark Purple",       [48,25,84],    "a"],
+  ["Pink",             [255,192,203], "b"], ["Bright Pink",      [255,105,180],   "c"], ["Hot Pink",          [255,20,147],  "d"],
+  ["Dark Pink",        [214,37,126],  "e"], ["Reddish Purple",   [149,53,132],    "f"], ["Peach",             [255,218,185], "g"],
+  ["Light Brown",      [196,154,108], "h"], ["Brown",            [139,69,19],     "i"], ["Dark Brown",        [65,43,21],    "j"]
 ];
 
 const GRID = 75;
@@ -240,6 +243,7 @@ PALETTE.forEach(([name, rgb]) => {
   const d = document.createElement('div');
   d.className = 'swatch';
   d.style.background = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+  d.title = name;
   paletteEl.appendChild(d);
 });
 
