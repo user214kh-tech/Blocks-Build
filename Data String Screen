@@ -15,14 +15,14 @@ local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
 -- ⚙️ CONFIGURATION DATA SETS
 -- ==========================================================================
 local SIZES_CONFIG = {
-	{name = "25x25",   canvas = 25,  sector = 16},
-	{name = "50x50",   canvas = 50,  sector = 18},
-	{name = "75x75",   canvas = 75,  sector = 20},
-	{name = "100x100", canvas = 100, sector = 22},
-	{name = "125x125", canvas = 125, sector = 24},
-	{name = "150x150", canvas = 150, sector = 26},
-	{name = "200x200", canvas = 200, sector = 28},
-	{name = "250x250", canvas = 250, sector = 30},
+	{name = "25x25",   canvas = 25,  sector = 25},
+	{name = "50x50",   canvas = 50,  sector = 26},
+	{name = "75x75",   canvas = 75,  sector = 27},
+	{name = "100x100", canvas = 100, sector = 28},
+	{name = "125x125", canvas = 125, sector = 29},
+	{name = "150x150", canvas = 150, sector = 30},
+	{name = "200x200", canvas = 200, sector = 31},
+	{name = "250x250", canvas = 250, sector = 32},
 	{name = "300x300", canvas = 300, sector = 32},
 }
 local selectedIndex = 3 -- Default selected option is 75x75
