@@ -358,7 +358,7 @@ local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
 	end
 	
 	local spawnCounter = 0
-	local THROTTLE_LIMIT = 6
+	local THROTTLE_LIMIT = 14 -- Optimized up from 6 for faster placements per frame
 	
 	-- 3. Sequentially step coordinates sector by sector (1 to total sectors)
 	for index, sector in ipairs(sectors) do
@@ -375,7 +375,7 @@ local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
 		
 		-- Leap player root tracking cleanly relative to target wall sector
 		HumanoidRootPart.CFrame = CFrame.new(START_X + 4, sectorCenterY, sectorCenterZ) * CFrame.Angles(0, math.rad(90), 0)
-		task.wait(0.25)
+		task.wait(0.12) -- Optimized down from 0.25 to speed up teleports safely
 		
 		-- Loop over sorted layout palette inside workspace cluster
 		for _, targetColor in ipairs(paletteColors) do
@@ -390,7 +390,7 @@ local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
 						
 						if not colorHasBeenEquipped then
 							InventoryRF:InvokeServer("Equip", "SelectedColor", targetColor)
-							task.wait(0.05)
+							task.wait(0.02) -- Optimized down from 0.05 to speed up color swapping
 							colorHasBeenEquipped = true
 						end
 						
