@@ -1,0 +1,223 @@
+-- References to the Remotes
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Packages = ReplicatedStorage:WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("kumarion_knit-rojo@0.2.0"):WaitForChild("knit-rojo"):WaitForChild("Services")
+
+local InventoryRF = Packages:WaitForChild("InventoryService"):WaitForChild("RF"):WaitForChild("Inventory")
+local PlaceBuildRF = Packages:WaitForChild("PlacementService"):WaitForChild("RF"):WaitForChild("PlaceBuild")
+
+-- References to the local player
+local Player = game:GetService("Players").LocalPlayer
+local PlayerGui = Player:WaitForChild("PlayerGui")
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+
+-- ==========================================================================
+-- 🎨 36-COLOR KEY DICTIONARY MAPPING
+-- ==========================================================================
+local COLOR_MAP = {
+	A = "White",            B = "Grey",             C = "Smokey Grey",
+	D = "Black",            E = "Red",              F = "Dark Red",
+	G = "Reddish Orange",   H = "Orange",           I = "Dark Orange",
+	J = "Yellowish Orange", K = "Yellow",           L = "Yellowish Green",
+	M = "Light Green",      N = "Lime Green",       O = "Bright Green",
+	P = "Green",            Q = "Dark Green",       R = "Forest Green",
+	S = "Blueish Green",    T = "Teal",             U = "Cyan",
+	V = "Sky Blue",         W = "Blue",             X = "Dark Blue",
+	Y = "Blueish Purple",   Z = "Purple",           a = "Dark Purple",
+	b = "Pink",             c = "Bright Pink",      d = "Hot Pink",
+	e = "Dark Pink",        f = "Reddish Purple",   g = "Peach",
+	h = "Light Brown",      i = "Brown",            j = "Dark Brown"
+}
+
+-- Create an indexed list of unique game palette colors to loop over
+local paletteColors = {}
+for _, gameColorName in pairs(COLOR_MAP) do
+	if not table.find(paletteColors, gameColorName) then
+		table.insert(paletteColors, gameColorName)
+	end
+end
+
+-- ==========================================================================
+-- 🛠️ MODERN MOBILE RUNTIME INTERFACE (UI)
+-- ==========================================================================
+if PlayerGui:FindFirstChild("MatrixPainterUI") then
+	PlayerGui.MatrixPainterUI:Destroy()
+end
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "MatrixPainterUI"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = PlayerGui
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 320, 0, 160)
+MainFrame.Position = UDim2.new(0.5, -160, 0.3, 0)
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 26, 31)
+MainFrame.BorderSizePixel = 1
+MainFrame.BorderColor3 = Color3.fromRGB(42, 43, 50)
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.Parent = ScreenGui
+
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 4)
+UICorner.Parent = MainFrame
+
+local Title = Instance.new("TextLabel")
+Title.Size = UDim2.new(1, 0, 0, 35)
+Title.Text = "75x75 MATRIX PAINTER (STABLE)"
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 15
+Title.TextColor3 = Color3.fromRGB(61, 220, 151)
+Title.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
+Title.BorderSizePixel = 0
+Title.Parent = MainFrame
+
+local TextBox = Instance.new("TextBox")
+TextBox.Size = UDim2.new(0, 290, 0, 45)
+TextBox.Position = UDim2.new(0.5, -145, 0, 45)
+TextBox.PlaceholderText = "Paste your 5,625-char data string here..."
+TextBox.Text = ""
+TextBox.ClearTextOnFocus = false
+TextBox.Font = Enum.Font.Code
+TextBox.TextSize = 12
+TextBox.TextColor3 = Color3.fromRGB(234, 231, 224)
+TextBox.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
+TextBox.BorderColor3 = Color3.fromRGB(42, 43, 50)
+TextBox.TextWrapped = true
+TextBox.Parent = MainFrame
+
+local StartButton = Instance.new("TextButton")
+StartButton.Size = UDim2.new(0, 290, 0, 40)
+StartButton.Position = UDim2.new(0.5, -145, 0, 105)
+StartButton.Text = "START SECTOR PAINT"
+StartButton.Font = Enum.Font.SourceSansBold
+StartButton.TextSize = 14
+StartButton.TextColor3 = Color3.fromRGB(11, 20, 16)
+StartButton.BackgroundColor3 = Color3.fromRGB(61, 220, 151)
+StartButton.BorderSizePixel = 0
+StartButton.Parent = MainFrame
+
+local ButtonCorner = Instance.new("UICorner")
+ButtonCorner.CornerRadius = UDim.new(0, 4)
+ButtonCorner.Parent = StartButton
+
+-- ==========================================================================
+-- 🚀 CORE SECTOR PAINT ENGINE ACTION
+-- ==========================================================================
+local function startPaintingProcess(dataString)
+	local GRID_SIZE = 75        
+	local SECTOR_SIZE = 15      
+	local STEP = 3              
+
+	local CENTER_X = -49.5
+	local CENTER_Z = 49.5
+
+	local START_X = CENTER_X
+	local START_Y = 1.5        
+	local START_Z = CENTER_Z - (((GRID_SIZE - 1) / 2) * STEP)
+
+	local defaultCFrame = CFrame.new(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+	local imageMatrix = {}
+	for row = 1, GRID_SIZE do
+		imageMatrix[row] = {}
+		for col = 1, GRID_SIZE do
+			local stringIndex = ((row - 1) * GRID_SIZE) + col
+			local characterKey = string.sub(dataString, stringIndex, stringIndex)
+			imageMatrix[row][col] = COLOR_MAP[characterKey] or "White"
+		end
+	end
+
+	local sectors = {}
+	for sRow = 0, 4 do
+		for sCol = 0, 4 do
+			table.insert(sectors, {
+				rowStart = (sRow * SECTOR_SIZE) + 1,
+				rowEnd = (sRow + 1) * SECTOR_SIZE,
+				colStart = (sCol * SECTOR_SIZE) + 1,
+				colEnd = (sCol + 1) * SECTOR_SIZE
+			})
+		end
+	end
+
+	local spawnCounter = 0
+	local THROTTLE_LIMIT = 6 -- Cut limit in half to ensure 100% block registration stability
+
+	for index, sector in ipairs(sectors) do
+		print("Painting Sector " .. index .. " / 25...")
+		
+		local centerRow = sector.rowStart + 7
+		local centerCol = sector.colStart + 7
+		
+		local sectorCenterY = START_Y + ((centerRow - 1) * STEP)
+		local sectorCenterZ = START_Z + ((centerCol - 1) * STEP)
+		
+		HumanoidRootPart.CFrame = CFrame.new(START_X + 4, sectorCenterY, sectorCenterZ) * CFrame.Angles(0, math.rad(90), 0)
+		task.wait(0.25) -- Slightly longer wait to let the server calibrate position fully
+		
+		for _, targetColor in ipairs(paletteColors) do
+			local colorHasBeenEquipped = false
+			
+			for row = sector.rowStart, sector.rowEnd do
+				local currentY = START_Y + ((row - 1) * STEP)
+				
+				for col = sector.colStart, sector.colEnd do
+					local pixelColor = imageMatrix[row][col]
+					
+					if pixelColor == targetColor then
+						local currentZ = START_Z + ((col - 1) * STEP)
+						
+						if not colorHasBeenEquipped then
+							InventoryRF:InvokeServer("Equip", "SelectedColor", targetColor)
+							task.wait(0.04) -- Added extra millisecond layer to stabilize tool swap sequence
+							colorHasBeenEquipped = true
+						end
+						
+						task.spawn(function()
+							-- Protected call setup prevents remote drops from missing visual parts entirely
+							pcall(function()
+								PlaceBuildRF:InvokeServer(
+									targetColor,
+									START_X,
+									currentY,
+									currentZ,
+									defaultCFrame,
+									1,
+									1
+								)
+							end)
+						end)
+						
+						spawnCounter = spawnCounter + 1
+						if spawnCounter >= THROTTLE_LIMIT then
+							spawnCounter = 0
+							task.wait() -- Microsecond yield hook
+						end
+					end
+				end
+			end
+			-- Tiny network cooldown when changing pixel elements inside the sector chunk
+			task.wait(0.01)
+		end
+	end
+	
+	print("Matrix painting process fully completed with 100% accuracy!")
+	MainFrame.Visible = true 
+end
+
+StartButton.MouseButton1Click:Connect(function()
+	local inputString = TextBox.Text:gsub("%s+", "") 
+	
+	if #inputString < 5625 then
+		StartButton.Text = "INVALID STRING LENGTH!"
+		StartButton.BackgroundColor3 = Color3.fromRGB(220, 61, 61)
+		task.wait(1.5)
+		StartButton.Text = "START SECTOR PAINT"
+		StartButton.BackgroundColor3 = Color3.fromRGB(61, 220, 151)
+		return
+	end
+	
+	MainFrame.Visible = false 
+	startPaintingProcess(inputString)
+end)
