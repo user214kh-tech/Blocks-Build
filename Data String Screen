@@ -12,10 +12,29 @@ local Character = Player.Character or Player.CharacterAdded:Wait()
 local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
 
 -- ==========================================================================
--- 🎨 36-COLOR KEY DICTIONARY MAPPING (FIXED SMOKY GREY)
+-- ⚙️ CONFIGURATION DATA SETS
+-- ==========================================================================
+local SIZES_CONFIG = {
+	{name = "25x25",   canvas = 25,  sector = 10},
+	{name = "50x50",   canvas = 50,  sector = 10},
+	{name = "75x75",   canvas = 75,  sector = 15},
+	{name = "100x100", canvas = 100, sector = 10},
+	{name = "125x125", canvas = 125, sector = 15},
+	{name = "150x150", canvas = 150, sector = 15},
+	{name = "200x200", canvas = 200, sector = 10},
+	{name = "250x250", canvas = 250, sector = 10},
+	{name = "300x300", canvas = 300, sector = 10}
+}
+local selectedIndex = 3 -- Default selected option is 75x75
+
+local POSITION_CONFIG = {"Front", "Middle", "Back"}
+local selectedPosition = "Middle" -- Default selected position
+
+-- ==========================================================================
+-- 🎨 36-COLOR KEY DICTIONARY MAPPING
 -- ==========================================================================
 local COLOR_MAP = {
-	A = "White",            B = "Grey",             C = "Smoky Grey", -- Fixed string name here
+	A = "White",            B = "Grey",             C = "Smoky Grey",
 	D = "Black",            E = "Red",              F = "Dark Red",
 	G = "Reddish Orange",   H = "Orange",           I = "Dark Orange",
 	J = "Yellowish Orange", K = "Yellow",           L = "Yellowish Green",
@@ -29,7 +48,6 @@ local COLOR_MAP = {
 	h = "Light Brown",      i = "Brown",            j = "Dark Brown"
 }
 
--- FIXED ORDER PALETTE (FIXED SMOKY GREY)
 local paletteColors = {
 	"White", "Grey", "Smoky Grey", "Black", "Red", "Dark Red",
 	"Reddish Orange", "Orange", "Dark Orange", "Yellowish Orange", "Yellow", "Yellowish Green",
@@ -40,7 +58,7 @@ local paletteColors = {
 }
 
 -- ==========================================================================
--- 🛠️ MODERN MOBILE RUNTIME INTERFACE (UI)
+-- 🛠️ USER INTERFACE SYSTEM
 -- ==========================================================================
 if PlayerGui:FindFirstChild("MatrixPainterUI") then
 	PlayerGui.MatrixPainterUI:Destroy()
@@ -52,8 +70,8 @@ ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = PlayerGui
 
 local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 320, 0, 160)
-MainFrame.Position = UDim2.new(0.5, -160, 0.3, 0)
+MainFrame.Size = UDim2.new(0, 340, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -170, 0.25, 0)
 MainFrame.BackgroundColor3 = Color3.fromRGB(25, 26, 31)
 MainFrame.BorderSizePixel = 1
 MainFrame.BorderColor3 = Color3.fromRGB(42, 43, 50)
@@ -62,12 +80,12 @@ MainFrame.Draggable = true
 MainFrame.Parent = ScreenGui
 
 local UICorner = Instance.new("UICorner")
-UICorner.CornerRadius = UDim.new(0, 4)
+UICorner.CornerRadius = UDim.new(0, 6)
 UICorner.Parent = MainFrame
 
 local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, 0, 0, 35)
-Title.Text = "75x75 MATRIX PAINTER (FIXED)"
+Title.Text = "MULTI-CANVAS POSITION PAINTER"
 Title.Font = Enum.Font.SourceSansBold
 Title.TextSize = 14
 Title.TextColor3 = Color3.fromRGB(61, 220, 151)
@@ -75,14 +93,103 @@ Title.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
 Title.BorderSizePixel = 0
 Title.Parent = MainFrame
 
+local SelectorLabel = Instance.new("TextLabel")
+SelectorLabel.Size = UDim2.new(0, 130, 0, 30)
+SelectorLabel.Position = UDim2.new(0, 15, 0, 45)
+SelectorLabel.Text = "Selected Canvas:"
+SelectorLabel.Font = Enum.Font.SourceSansSemibold
+SelectorLabel.TextSize = 13
+SelectorLabel.TextColor3 = Color3.fromRGB(160, 160, 165)
+SelectorLabel.TextXAlignment = Enum.TextXAlignment.Left
+SelectorLabel.BackgroundTransparency = 1
+SelectorLabel.Parent = MainFrame
+
+local DropdownBtn = Instance.new("TextButton")
+DropdownBtn.Size = UDim2.new(0, 170, 0, 30)
+DropdownBtn.Position = UDim2.new(0, 155, 0, 45)
+DropdownBtn.Text = SIZES_CONFIG[selectedIndex].name .. " ▼"
+DropdownBtn.Font = Enum.Font.SourceSansBold
+DropdownBtn.TextSize = 13
+DropdownBtn.TextColor3 = Color3.fromRGB(235, 235, 240)
+DropdownBtn.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
+DropdownBtn.BorderColor3 = Color3.fromRGB(42, 43, 50)
+DropdownBtn.Parent = MainFrame
+
+local PosSelectorLabel = Instance.new("TextLabel")
+PosSelectorLabel.Size = UDim2.new(0, 130, 0, 30)
+PosSelectorLabel.Position = UDim2.new(0, 15, 0, 80)
+PosSelectorLabel.Text = "Image Position:"
+PosSelectorLabel.Font = Enum.Font.SourceSansSemibold
+PosSelectorLabel.TextSize = 13
+PosSelectorLabel.TextColor3 = Color3.fromRGB(160, 160, 165)
+PosSelectorLabel.TextXAlignment = Enum.TextXAlignment.Left
+PosSelectorLabel.BackgroundTransparency = 1
+PosSelectorLabel.Parent = MainFrame
+
+local PosDropdownBtn = Instance.new("TextButton")
+PosDropdownBtn.Size = UDim2.new(0, 170, 0, 30)
+PosDropdownBtn.Position = UDim2.new(0, 155, 0, 80)
+PosDropdownBtn.Text = selectedPosition .. " ▼"
+PosDropdownBtn.Font = Enum.Font.SourceSansBold
+PosDropdownBtn.TextSize = 13
+PosDropdownBtn.TextColor3 = Color3.fromRGB(235, 235, 240)
+PosDropdownBtn.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
+PosDropdownBtn.BorderColor3 = Color3.fromRGB(42, 43, 50)
+PosDropdownBtn.Parent = MainFrame
+
+local ReqLabel = Instance.new("TextLabel")
+ReqLabel.Size = UDim2.new(0, 130, 0, 20)
+ReqLabel.Position = UDim2.new(0, 15, 0, 115)
+ReqLabel.Text = "Data Length Required:"
+ReqLabel.Font = Enum.Font.SourceSansSemibold
+ReqLabel.TextSize = 13
+ReqLabel.TextColor3 = Color3.fromRGB(160, 160, 165)
+ReqLabel.TextXAlignment = Enum.TextXAlignment.Left
+ReqLabel.BackgroundTransparency = 1
+ReqLabel.Parent = MainFrame
+
+local ReqValue = Instance.new("TextLabel")
+ReqValue.Size = UDim2.new(0, 170, 0, 20)
+ReqValue.Position = UDim2.new(0, 155, 0, 115)
+local defaultSize = SIZES_CONFIG[selectedIndex].canvas
+ReqValue.Text = tostring(defaultSize * defaultSize) .. " Characters"
+ReqValue.Font = Enum.Font.Code
+ReqValue.TextSize = 13
+ReqValue.TextColor3 = Color3.fromRGB(61, 220, 151)
+ReqValue.TextXAlignment = Enum.TextXAlignment.Left
+ReqValue.BackgroundTransparency = 1
+ReqValue.Parent = MainFrame
+
+local StatusTitle = Instance.new("TextLabel")
+StatusTitle.Size = UDim2.new(0, 130, 0, 20)
+StatusTitle.Position = UDim2.new(0, 15, 0, 140)
+StatusTitle.Text = "Status:"
+StatusTitle.Font = Enum.Font.SourceSansSemibold
+StatusTitle.TextSize = 13
+StatusTitle.TextColor3 = Color3.fromRGB(160, 160, 165)
+StatusTitle.TextXAlignment = Enum.TextXAlignment.Left
+StatusTitle.BackgroundTransparency = 1
+StatusTitle.Parent = MainFrame
+
+local StatusValue = Instance.new("TextLabel")
+StatusValue.Size = UDim2.new(0, 170, 0, 20)
+StatusValue.Position = UDim2.new(0, 155, 0, 140)
+StatusValue.Text = "Ready"
+StatusValue.Font = Enum.Font.SourceSansBold
+StatusValue.TextSize = 13
+StatusValue.TextColor3 = Color3.fromRGB(235, 235, 240)
+StatusValue.TextXAlignment = Enum.TextXAlignment.Left
+StatusValue.BackgroundTransparency = 1
+StatusValue.Parent = MainFrame
+
 local TextBox = Instance.new("TextBox")
-TextBox.Size = UDim2.new(0, 290, 0, 45)
-TextBox.Position = UDim2.new(0.5, -145, 0, 45)
-TextBox.PlaceholderText = "Paste your 5,625-char data string here..."
+TextBox.Size = UDim2.new(0, 310, 0, 60)
+TextBox.Position = UDim2.new(0.5, -155, 0, 170)
+TextBox.PlaceholderText = "Paste your data string here..."
 TextBox.Text = ""
 TextBox.ClearTextOnFocus = false
 TextBox.Font = Enum.Font.Code
-TextBox.TextSize = 12
+TextBox.TextSize = 11
 TextBox.TextColor3 = Color3.fromRGB(234, 231, 224)
 TextBox.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
 TextBox.BorderColor3 = Color3.fromRGB(42, 43, 50)
@@ -90,8 +197,8 @@ TextBox.TextWrapped = true
 TextBox.Parent = MainFrame
 
 local StartButton = Instance.new("TextButton")
-StartButton.Size = UDim2.new(0, 290, 0, 40)
-StartButton.Position = UDim2.new(0.5, -145, 0, 105)
+StartButton.Size = UDim2.new(0, 310, 0, 45)
+StartButton.Position = UDim2.new(0.5, -155, 0, 240)
 StartButton.Text = "START SECTOR PAINT"
 StartButton.Font = Enum.Font.SourceSansBold
 StartButton.TextSize = 14
@@ -104,23 +211,128 @@ local ButtonCorner = Instance.new("UICorner")
 ButtonCorner.CornerRadius = UDim.new(0, 4)
 ButtonCorner.Parent = StartButton
 
--- ==========================================================================
--- 🚀 CORE SECTOR PAINT ENGINE ACTION (1 to 25 Order)
--- ==========================================================================
-local function startPaintingProcess(dataString)
-	local GRID_SIZE = 75        
-	local SECTOR_SIZE = 15      
-	local STEP = 3              
+local ScrollFrame = Instance.new("ScrollingFrame")
+ScrollFrame.Size = UDim2.new(0, 170, 0, 150)
+ScrollFrame.Position = UDim2.new(0, 155, 0, 76)
+ScrollFrame.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
+ScrollFrame.BorderColor3 = Color3.fromRGB(42, 43, 50)
+ScrollFrame.ZIndex = 5
+ScrollFrame.Visible = false
+ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, #SIZES_CONFIG * 26)
+ScrollFrame.ScrollBarThickness = 4
+ScrollFrame.Parent = MainFrame
 
-	local CENTER_X = -49.5
-	local CENTER_Z = 49.5
+for idx, item in ipairs(SIZES_CONFIG) do
+	local ItemBtn = Instance.new("TextButton")
+	ItemBtn.Size = UDim2.new(1, 0, 0, 26)
+	ItemBtn.Position = UDim2.new(0, 0, 0, (idx - 1) * 26)
+	ItemBtn.Text = item.name
+	ItemBtn.Font = Enum.Font.SourceSansBold
+	ItemBtn.TextSize = 12
+	ItemBtn.TextColor3 = Color3.fromRGB(200, 200, 205)
+	ItemBtn.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
+	ItemBtn.BorderSizePixel = 0
+	ItemBtn.ZIndex = 6
+	ItemBtn.Parent = ScrollFrame
+	
+	ItemBtn.MouseEnter:Connect(function() ItemBtn.BackgroundColor3 = Color3.fromRGB(28, 29, 36) end)
+	ItemBtn.MouseLeave:Connect(function() ItemBtn.BackgroundColor3 = Color3.fromRGB(16, 17, 21) end)
+	
+	ItemBtn.MouseButton1Click:Connect(function()
+		selectedIndex = idx
+		DropdownBtn.Text = item.name .. " ▼"
+		ReqValue.Text = tostring(item.canvas * item.canvas) .. " Characters"
+		ScrollFrame.Visible = false
+	end)
+end
 
+DropdownBtn.MouseButton1Click:Connect(function()
+	ScrollFrame.Visible = not ScrollFrame.Visible
+	PosScrollFrame.Visible = false
+end)
+
+local PosScrollFrame = Instance.new("ScrollingFrame")
+PosScrollFrame.Size = UDim2.new(0, 170, 0, 80) -- Adjusted size since there are only 3 options now
+PosScrollFrame.Position = UDim2.new(0, 155, 0, 111)
+PosScrollFrame.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
+PosScrollFrame.BorderColor3 = Color3.fromRGB(42, 43, 50)
+PosScrollFrame.ZIndex = 5
+PosScrollFrame.Visible = false
+PosScrollFrame.CanvasSize = UDim2.new(0, 0, 0, #POSITION_CONFIG * 26)
+PosScrollFrame.ScrollBarThickness = 4
+PosScrollFrame.Parent = MainFrame
+
+for idx, posName in ipairs(POSITION_CONFIG) do
+	local ItemBtn = Instance.new("TextButton")
+	ItemBtn.Size = UDim2.new(1, 0, 0, 26)
+	ItemBtn.Position = UDim2.new(0, 0, 0, (idx - 1) * 26)
+	ItemBtn.Text = posName
+	ItemBtn.Font = Enum.Font.SourceSansBold
+	ItemBtn.TextSize = 12
+	ItemBtn.TextColor3 = Color3.fromRGB(200, 200, 205)
+	ItemBtn.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
+	ItemBtn.BorderSizePixel = 0
+	ItemBtn.ZIndex = 6
+	ItemBtn.Parent = PosScrollFrame
+	
+	ItemBtn.MouseEnter:Connect(function() ItemBtn.BackgroundColor3 = Color3.fromRGB(28, 29, 36) end)
+	ItemBtn.MouseLeave:Connect(function() ItemBtn.BackgroundColor3 = Color3.fromRGB(16, 17, 21) end)
+	
+	ItemBtn.MouseButton1Click:Connect(function()
+		selectedPosition = posName
+		PosDropdownBtn.Text = posName .. " ▼"
+		PosScrollFrame.Visible = false
+	end)
+end
+
+PosDropdownBtn.MouseButton1Click:Connect(function()
+	PosScrollFrame.Visible = not PosScrollFrame.Visible
+	ScrollFrame.Visible = false
+end)
+
+-- ==========================================================================
+-- 🚀 RUNTIME MULTI-CANVAS VERTICAL ENGINE
+-- ==========================================================================
+local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
+	local GRID_SIZE = cfg.canvas
+	local SECTOR_SIZE = cfg.sector
+	local STEP = 3
+	
+	-- Plot Boundary Definitions
+	local MIN_X = -646.5
+	local MAX_X = 547.5
+	local MIN_Z = -547.5
+	local MAX_Z = 646.5
+	
+	local MAP_CENTER_Z = (MIN_Z + MAX_Z) / 2
+	local singlePadding = STEP -- 1 block padding (3 studs)
+	
+	-- Location routing adjusts baseline X and Z coordinates exclusively
+	local CENTER_X, CENTER_Z
+	local placementCFrame = CFrame.new(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+	
+	if posSetting == "Middle" then
+		CENTER_X = -49.5
+		CENTER_Z = 49.5
+		placementCFrame = CFrame.new(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+	elseif posSetting == "Front" then
+		-- Flush near MAX_X boundary, facing the center (rotated 180°)
+		CENTER_X = MAX_X - singlePadding
+		CENTER_Z = MAP_CENTER_Z
+		placementCFrame = CFrame.Angles(0, math.rad(180), 0)
+	elseif posSetting == "Back" then
+		-- Flush near MIN_X boundary, facing the center (rotated 0°)
+		CENTER_X = MIN_X + singlePadding
+		CENTER_Z = MAP_CENTER_Z
+		placementCFrame = CFrame.Angles(0, 0, 0)
+	end
+	
+	-- Compute original vertical engine coordinate starts
 	local START_X = CENTER_X
 	local START_Y = 1.5        
 	local START_Z = CENTER_Z - (((GRID_SIZE - 1) / 2) * STEP)
-
-	local defaultCFrame = CFrame.new(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
-
+	
+	-- 1. Parse string array seamlessly matching runtime coordinates
 	local imageMatrix = {}
 	for row = 1, GRID_SIZE do
 		imageMatrix[row] = {}
@@ -130,34 +342,42 @@ local function startPaintingProcess(dataString)
 			imageMatrix[row][col] = COLOR_MAP[characterKey] or "White"
 		end
 	end
-
+	
+	-- 2. Dynamically prepare active workspace clusters
+	local sectorsPerSide = math.ceil(GRID_SIZE / SECTOR_SIZE)
 	local sectors = {}
-	for sRow = 0, 4 do
-		for sCol = 0, 4 do
+	for sRow = 0, sectorsPerSide - 1 do
+		for sCol = 0, sectorsPerSide - 1 do
 			table.insert(sectors, {
 				rowStart = (sRow * SECTOR_SIZE) + 1,
-				rowEnd = (sRow + 1) * SECTOR_SIZE,
+				rowEnd = math.min((sRow + 1) * SECTOR_SIZE, GRID_SIZE),
 				colStart = (sCol * SECTOR_SIZE) + 1,
-				colEnd = (sCol + 1) * SECTOR_SIZE
+				colEnd = math.min((sCol + 1) * SECTOR_SIZE, GRID_SIZE)
 			})
 		end
 	end
-
+	
 	local spawnCounter = 0
 	local THROTTLE_LIMIT = 6
-
+	
+	-- 3. Sequentially step coordinates sector by sector (1 to total sectors)
 	for index, sector in ipairs(sectors) do
-		print("Painting Sector " .. index .. " / 25...")
+		StatusValue.Text = "Painting (" .. index .. "/" .. #sectors .. ")"
+		StatusValue.TextColor3 = Color3.fromRGB(235, 180, 60)
 		
-		local centerRow = sector.rowStart + 7
-		local centerCol = sector.colStart + 7
+		local actualSectorRows = (sector.rowEnd - sector.rowStart) + 1
+		local actualSectorCols = (sector.colEnd - sector.colStart) + 1
+		local centerRow = sector.rowStart + math.floor(actualSectorRows / 2)
+		local centerCol = sector.colStart + math.floor(actualSectorCols / 2)
 		
 		local sectorCenterY = START_Y + ((centerRow - 1) * STEP)
 		local sectorCenterZ = START_Z + ((centerCol - 1) * STEP)
 		
+		-- Leap player root tracking cleanly relative to target wall sector
 		HumanoidRootPart.CFrame = CFrame.new(START_X + 4, sectorCenterY, sectorCenterZ) * CFrame.Angles(0, math.rad(90), 0)
 		task.wait(0.25)
 		
+		-- Loop over sorted layout palette inside workspace cluster
 		for _, targetColor in ipairs(paletteColors) do
 			local colorHasBeenEquipped = false
 			
@@ -165,9 +385,7 @@ local function startPaintingProcess(dataString)
 				local currentY = START_Y + ((row - 1) * STEP)
 				
 				for col = sector.colStart, sector.colEnd do
-					local pixelColor = imageMatrix[row][col]
-					
-					if pixelColor == targetColor then
+					if imageMatrix[row][col] == targetColor then
 						local currentZ = START_Z + ((col - 1) * STEP)
 						
 						if not colorHasBeenEquipped then
@@ -183,7 +401,7 @@ local function startPaintingProcess(dataString)
 									START_X,
 									currentY,
 									currentZ,
-									defaultCFrame,
+									placementCFrame,
 									1,
 									1
 								)
@@ -202,22 +420,33 @@ local function startPaintingProcess(dataString)
 		end
 	end
 	
-	print("Matrix painting process fully completed with 100% accuracy!")
-	MainFrame.Visible = true 
+	StatusValue.Text = "Ready"
+	StatusValue.TextColor3 = Color3.fromRGB(61, 220, 151)
+	MainFrame.Visible = true
 end
 
+-- ==========================================================================
+-- 🛠️ SYSTEM TRIGGER VALIDATION INTERFACE
+-- ==========================================================================
 StartButton.MouseButton1Click:Connect(function()
-	local inputString = TextBox.Text:gsub("%s+", "") 
+	local currentConfig = SIZES_CONFIG[selectedIndex]
+	local inputString = TextBox.Text:gsub("%s+", "")
+	local expectedLength = currentConfig.canvas * currentConfig.canvas
 	
-	if #inputString < 5625 then
-		StartButton.Text = "INVALID STRING LENGTH!"
+	if #inputString ~= expectedLength then
+		StatusValue.Text = "Invalid Data Length"
+		StatusValue.TextColor3 = Color3.fromRGB(220, 61, 61)
+		
+		StartButton.Text = "SIZE MISMATCH! NEED " .. expectedLength .. " CHARS"
 		StartButton.BackgroundColor3 = Color3.fromRGB(220, 61, 61)
-		task.wait(1.5)
+		task.wait(2)
 		StartButton.Text = "START SECTOR PAINT"
 		StartButton.BackgroundColor3 = Color3.fromRGB(61, 220, 151)
 		return
 	end
 	
-	MainFrame.Visible = false 
-	startPaintingProcess(inputString)
+	ScrollFrame.Visible = false
+	PosScrollFrame.Visible = false
+	MainFrame.Visible = false
+	runWorkspaceMatrixEngine(inputString, currentConfig, selectedPosition)
 end)
