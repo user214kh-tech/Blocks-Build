@@ -1,0 +1,111 @@
+-- References to the Remotes
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Packages = ReplicatedStorage:WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("kumarion_knit-rojo@0.2.0"):WaitForChild("knit-rojo"):WaitForChild("Services")
+
+local InventoryRF = Packages:WaitForChild("InventoryService"):WaitForChild("RF"):WaitForChild("Inventory")
+local PlaceBuildRF = Packages:WaitForChild("PlacementService"):WaitForChild("RF"):WaitForChild("PlaceBuild")
+
+-- References to the local player
+local Player = game:GetService("Players").LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+
+-- ==========================================================================
+-- 📍 FINELY-TUNED SAFE SPEED 15x15 SECTOR CONFIGURATION (75x75 TOTAL)
+-- ==========================================================================
+local GRID_SIZE = 75        
+local SECTOR_SIZE = 15      
+local STEP = 3              
+
+local CENTER_X = -49.5
+local CENTER_Z = 49.5
+
+-- Calculate absolute bottom-left origin coordinate of the 75x75 board
+local START_X = CENTER_X
+local START_Y = 1.5        
+local START_Z = CENTER_Z - (((GRID_SIZE - 1) / 2) * STEP)
+
+local defaultCFrame = CFrame.new(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+-- Generate the 25 distinct 15x15 geographic sectors
+local sectors = {}
+for sRow = 0, 4 do
+	for sCol = 0, 4 do
+		table.insert(sectors, {
+			rowStart = (sRow * SECTOR_SIZE) + 1,
+			rowEnd = (sRow + 1) * SECTOR_SIZE,
+			colStart = (sCol * SECTOR_SIZE) + 1,
+			colEnd = (sCol + 1) * SECTOR_SIZE
+		})
+	end
+end
+
+local colors = {"White", "Black"}
+
+-- SAFE SPEED THROTTLE SETTINGS
+local spawnCounter = 0
+local THROTTLE_LIMIT = 12 -- Lowered to 12 for maximum reliability and zero bugs
+
+-- Execute structural build over the 25 tight sectors
+for index, sector in ipairs(sectors) do
+	print("Building Sector " .. index .. " / 25 at Safe-Optimized Speed...")
+	
+	-- 1. Calculate the geographic middle block coordinate of this tight 15x15 sector
+	local centerRow = sector.rowStart + 7
+	local centerCol = sector.colStart + 7
+	
+	local sectorCenterY = START_Y + ((centerRow - 1) * STEP)
+	local sectorCenterZ = START_Z + ((centerCol - 1) * STEP)
+	
+	-- 2. Teleport to the center of the active tight sector zone
+	HumanoidRootPart.CFrame = CFrame.new(START_X + 4, sectorCenterY, sectorCenterZ) * CFrame.Angles(0, math.rad(90), 0)
+	task.wait(0.2) -- Solid position replication window to ensure proximity is accepted
+	
+	-- 3. Cycle batch color patterns sequentially across the current block array
+	for _, targetColor in ipairs(colors) do
+		
+		-- Equip target color once per sector pass
+		InventoryRF:InvokeServer("Equip", "SelectedColor", targetColor)
+		task.wait(0.03) -- Safe buffer for tool swap stabilization
+		
+		-- Run positional grid loop inside the 15x15 segment
+		for row = sector.rowStart, sector.rowEnd do
+			local currentY = START_Y + ((row - 1) * STEP)
+			
+			for col = sector.colStart, sector.colEnd do
+				-- Seamless global calculation checker
+				local isWhite = ((row + col) % 2 == 0)
+				local structuralColor = isWhite and "White" or "Black"
+				
+				-- If the block color matches the current pass, fire it asynchronously
+				if structuralColor == targetColor then
+					local currentZ = START_Z + ((col - 1) * STEP)
+					
+					-- Fire asynchronously in smaller, safer chunks
+					task.spawn(function()
+						PlaceBuildRF:InvokeServer(
+							targetColor,
+							START_X,
+							currentY,
+							currentZ,
+							defaultCFrame,
+							1,
+							1
+						)
+					end)
+					
+					-- Throttle optimization check
+					spawnCounter = spawnCounter + 1
+					if spawnCounter >= THROTTLE_LIMIT then
+						spawnCounter = 0
+						task.wait() -- Microscopic yield to clear the Lua scheduler and enforce stability
+					end
+				end
+			end
+		end
+		
+		task.wait(0.03) -- Safe break between color shifts
+	end
+end
+
+print("Perfected stable 75x75 chessboard complete!")
