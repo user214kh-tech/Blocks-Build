@@ -12,10 +12,10 @@ local Character = Player.Character or Player.CharacterAdded:Wait()
 local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
 
 -- ==========================================================================
--- 🎨 36-COLOR KEY DICTIONARY MAPPING
+-- 🎨 36-COLOR KEY DICTIONARY MAPPING (FIXED SMOKY GREY)
 -- ==========================================================================
 local COLOR_MAP = {
-	A = "White",            B = "Grey",             C = "Smokey Grey",
+	A = "White",            B = "Grey",             C = "Smoky Grey", -- Fixed string name here
 	D = "Black",            E = "Red",              F = "Dark Red",
 	G = "Reddish Orange",   H = "Orange",           I = "Dark Orange",
 	J = "Yellowish Orange", K = "Yellow",           L = "Yellowish Green",
@@ -29,13 +29,15 @@ local COLOR_MAP = {
 	h = "Light Brown",      i = "Brown",            j = "Dark Brown"
 }
 
--- Create an indexed list of unique game palette colors to loop over
-local paletteColors = {}
-for _, gameColorName in pairs(COLOR_MAP) do
-	if not table.find(paletteColors, gameColorName) then
-		table.insert(paletteColors, gameColorName)
-	end
-end
+-- FIXED ORDER PALETTE (FIXED SMOKY GREY)
+local paletteColors = {
+	"White", "Grey", "Smoky Grey", "Black", "Red", "Dark Red",
+	"Reddish Orange", "Orange", "Dark Orange", "Yellowish Orange", "Yellow", "Yellowish Green",
+	"Light Green", "Lime Green", "Bright Green", "Green", "Dark Green", "Forest Green",
+	"Blueish Green", "Teal", "Cyan", "Sky Blue", "Blue", "Dark Blue",
+	"Blueish Purple", "Purple", "Dark Purple", "Pink", "Bright Pink", "Hot Pink",
+	"Dark Pink", "Reddish Purple", "Peach", "Light Brown", "Brown", "Dark Brown"
+}
 
 -- ==========================================================================
 -- 🛠️ MODERN MOBILE RUNTIME INTERFACE (UI)
@@ -65,9 +67,9 @@ UICorner.Parent = MainFrame
 
 local Title = Instance.new("TextLabel")
 Title.Size = UDim2.new(1, 0, 0, 35)
-Title.Text = "75x75 MATRIX PAINTER (STABLE)"
+Title.Text = "75x75 MATRIX PAINTER (FIXED)"
 Title.Font = Enum.Font.SourceSansBold
-Title.TextSize = 15
+Title.TextSize = 14
 Title.TextColor3 = Color3.fromRGB(61, 220, 151)
 Title.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
 Title.BorderSizePixel = 0
@@ -103,7 +105,7 @@ ButtonCorner.CornerRadius = UDim.new(0, 4)
 ButtonCorner.Parent = StartButton
 
 -- ==========================================================================
--- 🚀 CORE SECTOR PAINT ENGINE ACTION
+-- 🚀 CORE SECTOR PAINT ENGINE ACTION (1 to 25 Order)
 -- ==========================================================================
 local function startPaintingProcess(dataString)
 	local GRID_SIZE = 75        
@@ -142,7 +144,7 @@ local function startPaintingProcess(dataString)
 	end
 
 	local spawnCounter = 0
-	local THROTTLE_LIMIT = 6 -- Cut limit in half to ensure 100% block registration stability
+	local THROTTLE_LIMIT = 6
 
 	for index, sector in ipairs(sectors) do
 		print("Painting Sector " .. index .. " / 25...")
@@ -154,7 +156,7 @@ local function startPaintingProcess(dataString)
 		local sectorCenterZ = START_Z + ((centerCol - 1) * STEP)
 		
 		HumanoidRootPart.CFrame = CFrame.new(START_X + 4, sectorCenterY, sectorCenterZ) * CFrame.Angles(0, math.rad(90), 0)
-		task.wait(0.25) -- Slightly longer wait to let the server calibrate position fully
+		task.wait(0.25)
 		
 		for _, targetColor in ipairs(paletteColors) do
 			local colorHasBeenEquipped = false
@@ -170,12 +172,11 @@ local function startPaintingProcess(dataString)
 						
 						if not colorHasBeenEquipped then
 							InventoryRF:InvokeServer("Equip", "SelectedColor", targetColor)
-							task.wait(0.04) -- Added extra millisecond layer to stabilize tool swap sequence
+							task.wait(0.05)
 							colorHasBeenEquipped = true
 						end
 						
 						task.spawn(function()
-							-- Protected call setup prevents remote drops from missing visual parts entirely
 							pcall(function()
 								PlaceBuildRF:InvokeServer(
 									targetColor,
@@ -192,12 +193,11 @@ local function startPaintingProcess(dataString)
 						spawnCounter = spawnCounter + 1
 						if spawnCounter >= THROTTLE_LIMIT then
 							spawnCounter = 0
-							task.wait() -- Microsecond yield hook
+							task.wait()
 						end
 					end
 				end
 			end
-			-- Tiny network cooldown when changing pixel elements inside the sector chunk
 			task.wait(0.01)
 		end
 	end
