@@ -128,8 +128,8 @@
     background:#000;
     max-width:100%;
   }
-  #srcCanvas{width:150px;height:150px;}
-  #outCanvas{width:250px;height:250px;}
+  #srcCanvas{width:120px;height:120px;}
+  #outCanvas{width:220px;height:220px;max-width:60vw;max-height:60vw;}
 
   .empty{
     color:var(--dim);font-size:12.5px;text-align:center;
@@ -142,6 +142,47 @@
   .swatch{
     aspect-ratio:1;border-radius:2px;border:1px solid rgba(255,255,255,0.08);
     position:relative;cursor:default;
+    transition:opacity .12s ease, box-shadow .12s ease, filter .12s ease;
+  }
+  /* not present in the uploaded image at all */
+  .swatch.unused{
+    opacity:0.1;
+    cursor:not-allowed;
+    filter:grayscale(60%);
+  }
+  /* present in image, currently selected */
+  .swatch.usable{cursor:pointer;}
+  .swatch.usable.active{
+    box-shadow:0 0 0 2px var(--accent);
+  }
+  .swatch.usable.active::after{
+    content:"✓";
+    position:absolute;top:2px;right:3px;
+    font-size:9px;font-weight:700;color:#08130e;
+    background:var(--accent);
+    width:12px;height:12px;line-height:12px;text-align:center;
+    border-radius:50%;
+  }
+  /* present in image, currently deselected */
+  .swatch.usable.inactive{
+    opacity:0.28;
+  }
+  .swatch.usable.inactive::after{
+    content:"✕";
+    position:absolute;top:2px;right:3px;
+    font-size:9px;font-weight:700;color:#eae7e0;
+    background:#000;
+    width:12px;height:12px;line-height:12px;text-align:center;
+    border-radius:50%;
+  }
+  .swatch:hover::before{
+    content:attr(data-name);
+    position:absolute;bottom:110%;left:50%;transform:translateX(-50%);
+    background:#000;color:#fff;font-size:9.5px;padding:3px 6px;
+    white-space:nowrap;border-radius:2px;z-index:5;border:1px solid var(--line);
+  }
+  .palette-hint{
+    font-size:10.5px;color:var(--dim);margin-top:10px;line-height:1.5;
   }
 
   .log{
@@ -163,8 +204,8 @@
 <body>
 <div class="wrap">
   <header>
-    <h1>75×75 <span>MATRIX</span> CONVERTER</h1>
-    <p>Converts your image into a perfect 75×75 grid and exports the data into clean alphabet character keys.</p>
+    <h1><span id="titleSize">75×75</span> <span>MATRIX</span> CONVERTER</h1>
+    <p>Converts your image into a perfect grid and exports the data into clean alphabet character keys.</p>
   </header>
 
   <div class="layout">
@@ -183,11 +224,27 @@
             <option value="off">Nearest color only (off)</option>
           </select>
         </div>
+
+        <div class="field">
+          <label>Grid size <span class="val" id="gridLabel">75 × 75</span></label>
+          <select id="gridSelect">
+            <option value="25">25 × 25</option>
+            <option value="50">50 × 50</option>
+            <option value="75" selected>75 × 75</option>
+            <option value="100">100 × 100</option>
+            <option value="125">125 × 125</option>
+            <option value="150">150 × 150</option>
+            <option value="200">200 × 200</option>
+            <option value="250">250 × 250</option>
+            <option value="300">300 × 300</option>
+          </select>
+        </div>
       </div>
 
       <div class="panel">
         <div class="cap" style="font-size:11px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">36-Color Palette</div>
         <div class="palette" id="palette"></div>
+        <div class="palette-hint">Colors found in your image light up and can be toggled off. Colors your image doesn't use stay dim and locked.</div>
       </div>
     </div>
 
@@ -196,7 +253,7 @@
         <div id="emptyState" class="empty">No image yet — upload one to see it converted here.</div>
         <div class="canvases" id="canvasArea" style="display:none;">
           <div class="canvasblock">
-            <div class="cap">Source (75×75)</div>
+            <div class="cap"><span id="srcCap">Source (75×75)</span></div>
             <canvas id="srcCanvas" width="75" height="75"></canvas>
           </div>
           <div class="canvasblock">
@@ -219,38 +276,69 @@
 
 <script>
 // ==========================================
-// 🎨 CORRECTED 36 GAME PALETTE DEFINITIONS
+// 🎨 CORRECTED 36 GAME PALETTE DEFINITIONS (FIXED SMOKY GREY)
 // ==========================================
 const PALETTE = [
-  ["White",            [255,255,255], "A"], ["Grey",             [128,128,128], "B"], ["Smokey Grey",       [75,75,75],    "C"],
-  ["Black",            [0,0,0],       "D"], ["Red",              [255,0,0],       "E"], ["Dark Red",          [139,0,0],     "F"],
-  ["Reddish Orange",   [255,69,0],    "G"], ["Orange",           [255,140,0],     "H"], ["Dark Orange",       [204,85,0],    "I"],
-  ["Yellowish Orange", [255,174,66],  "J"], ["Yellow",           [255,255,0],     "K"], ["Yellowish Green",   [154,205,50], "L"],
-  ["Light Green",      [144,238,144], "M"], ["Lime Green",       [50,205,50],     "N"], ["Bright Green",      [0,255,0],     "O"],
-  ["Green",            [0,128,0],     "P"], ["Dark Green",       [0,100,0],       "Q"], ["Forest Green",      [34,139,34],  "R"],
-  ["Blueish Green",    [0,168,143],   "S"], ["Teal",             [0,128,128],     "T"], ["Cyan",              [0,255,255],   "U"],
-  ["Sky Blue",         [135,206,235], "V"], ["Blue",             [0,0,255],       "W"], ["Dark Blue",         [0,0,139],     "X"],
-  ["Blueish Purple",   [112,41,216],  "Y"], ["Purple",           [128,0,128],     "Z"], ["Dark Purple",       [48,25,84],    "a"],
-  ["Pink",             [255,192,203], "b"], ["Bright Pink",      [255,105,180],   "c"], ["Hot Pink",          [255,20,147],  "d"],
-  ["Dark Pink",        [214,37,126],  "e"], ["Reddish Purple",   [149,53,132],    "f"], ["Peach",             [255,218,185], "g"],
-  ["Light Brown",      [196,154,108], "h"], ["Brown",            [139,69,19],     "i"], ["Dark Brown",        [65,43,21],    "j"]
+  ["White",            [255,255,255], "A"], ["Grey",             [99,95,98],    "B"], ["Smoky Grey",        [70,96,117],   "C"],
+  ["Black",            [0,0,0],       "D"], ["Red",              [196,40,28],     "E"], ["Dark Red",          [117,0,0],     "F"],
+  ["Reddish Orange",   [217,133,108], "G"], ["Orange",           [218,133,65],    "H"], ["Dark Orange",       [139,84,41],   "I"],
+  ["Yellowish Orange", [226,155,64],  "J"], ["Yellow",           [245,205,48],    "K"], ["Yellowish Green",   [145,212,84], "L"],
+  ["Light Green",      [43,255,111],  "M"], ["Lime Green",       [35,244,46],     "N"], ["Bright Green",      [203,255,154], "O"],
+  ["Green",            [75,151,75],   "P"], ["Dark Green",       [0,97,0],        "Q"], ["Forest Green",      [51,104,6],   "R"],
+  ["Blueish Green",    [0,143,156],   "S"], ["Teal",             [61,255,208],    "T"], ["Cyan",              [61,171,238],  "U"],
+  ["Sky Blue",         [61,171,238],  "V"], ["Blue",             [174,255,254],   "W"], ["Dark Blue",         [0,32,96],     "X"],
+  ["Blueish Purple",   [67,84,147],   "Y"], ["Purple",           [107,50,124],    "Z"], ["Dark Purple",       [61,21,133],   "a"],
+  ["Pink",             [255,102,204], "b"], ["Bright Pink",      [254,119,254],   "c"], ["Hot Pink",          [250,0,173],   "d"],
+  ["Dark Pink",        [235,1,96],    "e"], ["Reddish Purple",   [229,173,200],   "f"], ["Peach",             [249,190,156], "g"],
+  ["Light Brown",      [204,153,0],   "h"], ["Brown",            [153,102,0],     "i"], ["Dark Brown",        [102,51,0],    "j"]
 ];
 
-const GRID = 75;
+let GRID = 75;
 let lastResult = null;
+let rawBuf = null;          // Float32Array of the cropped/resized source pixels, untouched
+let usedSet = new Set();    // palette indices actually present in this image (full 36-color pass)
+let activeSet = new Set();  // subset of usedSet the user currently has selected
 
 const paletteEl = document.getElementById('palette');
-PALETTE.forEach(([name, rgb]) => {
+const swatchEls = [];
+PALETTE.forEach(([name, rgb], i) => {
   const d = document.createElement('div');
-  d.className = 'swatch';
+  d.className = 'swatch unused';
   d.style.background = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
-  d.title = name;
+  d.dataset.name = name;
+  d.addEventListener('click', () => toggleColor(i));
   paletteEl.appendChild(d);
+  swatchEls.push(d);
 });
 
-function nearestColor(r,g,b){
-  let bestI=0, bestD=Infinity;
+function toggleColor(i){
+  if(!usedSet.has(i)) return; // locked, not present in the image
+  if(activeSet.has(i)){
+    if(activeSet.size === 1) return; // keep at least one color active
+    activeSet.delete(i);
+  } else {
+    activeSet.add(i);
+  }
+  refreshSwatchStates();
+  if(rawBuf) recompute();
+}
+
+function refreshSwatchStates(){
+  swatchEls.forEach((el, i) => {
+    el.classList.remove('unused','usable','active','inactive');
+    if(usedSet.has(i)){
+      el.classList.add('usable');
+      el.classList.add(activeSet.has(i) ? 'active' : 'inactive');
+    } else {
+      el.classList.add('unused');
+    }
+  });
+}
+
+function nearestColor(r,g,b,candidateSet){
+  let bestI=-1, bestD=Infinity;
   for(let i=0;i<PALETTE.length;i++){
+    if(candidateSet && !candidateSet.has(i)) continue;
     const [,p] = PALETTE[i];
     const dr=r-p[0], dg=g-p[1], db=b-p[2];
     const d=dr*dr+dg*dg+db*db;
@@ -271,6 +359,10 @@ const outCanvas = document.getElementById('outCanvas');
 const logText = document.getElementById('logText');
 const ditherSelect = document.getElementById('ditherSelect');
 const ditherLabel = document.getElementById('ditherLabel');
+const gridSelect = document.getElementById('gridSelect');
+const gridLabel = document.getElementById('gridLabel');
+const titleSize = document.getElementById('titleSize');
+const srcCap = document.getElementById('srcCap');
 const copyCodeBtn = document.getElementById('copyCodeBtn');
 
 drop.addEventListener('click', () => fileInput.click());
@@ -285,6 +377,13 @@ fileInput.addEventListener('change', () => {
 });
 ditherSelect.addEventListener('change', () => {
   ditherLabel.textContent = ditherSelect.value === 'on' ? 'On' : 'Off';
+  if(rawBuf) recompute();
+});
+gridSelect.addEventListener('change', () => {
+  const n = gridSelect.value;
+  gridLabel.textContent = `${n} × ${n}`;
+  titleSize.textContent = `${n}×${n}`;
+  srcCap.textContent = `Source (${n}×${n})`;
   if(window.__lastImg) processImage(window.__lastImg);
 });
 
@@ -307,6 +406,10 @@ function processImage(img){
   canvasArea.style.display = 'flex';
   logArea.style.display = 'block';
 
+  GRID = parseInt(gridSelect.value, 10);
+  srcCanvas.width = GRID; srcCanvas.height = GRID;
+  outCanvas.width = GRID; outCanvas.height = GRID;
+
   const side = Math.min(img.width, img.height);
   const sx = (img.width - side)/2;
   const sy = (img.height - side)/2;
@@ -325,25 +428,40 @@ function processImage(img){
   const imgData = wctx.getImageData(0,0,GRID,GRID);
   const data = imgData.data;
 
-  const buf = new Float32Array(GRID*GRID*3);
+  rawBuf = new Float32Array(GRID*GRID*3);
   for(let i=0;i<GRID*GRID;i++){
-    buf[i*3]   = data[i*4];
-    buf[i*3+1] = data[i*4+1];
-    buf[i*3+2] = data[i*4+2];
+    rawBuf[i*3]   = data[i*4];
+    rawBuf[i*3+1] = data[i*4+1];
+    rawBuf[i*3+2] = data[i*4+2];
   }
 
-  const useDither = ditherSelect.value === 'on';
+  // first pass across the full 36-color palette just to find out which
+  // colors this image actually uses
+  const allIdx = new Set(PALETTE.map((_, i) => i));
+  usedSet = quantize(allIdx, false).usedIndices;
+  activeSet = new Set(usedSet);
+  refreshSwatchStates();
+
+  recompute();
+  copyCodeBtn.disabled = false;
+}
+
+// Runs quantization (with optional dithering) over rawBuf restricted to
+// candidateSet, returns the per-pixel result grid plus which colors got used.
+function quantize(candidateSet, useDither){
+  const buf = Float32Array.from(rawBuf);
   const result = [];
   for(let y=0;y<GRID;y++) result.push(new Array(GRID));
+  const usedIndices = new Set();
 
-  // Process top-down standard for beautiful preview rendering
   for(let y=0;y<GRID;y++){
     for(let x=0;x<GRID;x++){
       const i = y*GRID+x;
       const r = buf[i*3], g = buf[i*3+1], b = buf[i*3+2];
-      const idx = nearestColor(r,g,b);
+      const idx = nearestColor(r,g,b,candidateSet);
       const [name, prgb, char] = PALETTE[idx];
-      result[y][x] = {char, rgb: prgb};
+      result[y][x] = {char, rgb: prgb, idx};
+      usedIndices.add(idx);
 
       if(useDither){
         const er = r - prgb[0];
@@ -365,10 +483,15 @@ function processImage(img){
       }
     }
   }
+  return {result, usedIndices};
+}
 
+function recompute(){
+  if(!rawBuf) return;
+  const useDither = ditherSelect.value === 'on';
+  const {result} = quantize(activeSet, useDither);
   lastResult = result;
 
-  // Render processed output preview window properly
   const octx = outCanvas.getContext('2d');
   const outData = octx.createImageData(GRID, GRID);
   for(let y=0;y<GRID;y++){
@@ -381,13 +504,10 @@ function processImage(img){
   octx.putImageData(outData, 0, 0);
 
   buildLog();
-  copyCodeBtn.disabled = false;
 }
 
-// 🛠️ CORRECT INVERTED STRING STREAM GENERATOR FOR ROBALOX COORDINATES
 function buildLog(){
   let singleStream = "";
-  // Map rows bottom-to-top into the raw data text string
   for(let y = GRID - 1; y >= 0; y--){
     for(let x = 0; x < GRID; x++){
       singleStream += lastResult[y][x].char;
