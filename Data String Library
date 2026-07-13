@@ -1,8 +1,1181 @@
-{
-  id: 1,
-  name: "girl",
-  size: 75,
-  category: "girl",
-  author: "",
-  data: "BGBBBCCCffAAAAAAAWBCBCBXBXjXjXZCXZXjYBZYZCZBYaBXZCCCCBCCGOffLffLffOfAgAfAgAGBGBCBCBfWAAAAAAAfCCXBXZXBXBaBXjaRZCXXBCDZBXjaRaRDaDCXCGfffGfGffGfgAgAgAgAgBBGXBCYXfAAAAAAAABXjaXjCjaCXjXBXCXXXCCCXBXCXBXZaBXjXBXgfOfLfgfLfgfOfAgAgAfABGBCCCCfWAAAAAAAADXXjXZXZXjCXBXXGffGfBGDCXjCXIXjXBXBXffGfGfgfGfgfgfAgAfAOAgGBGCCCCWfWAAAAAAAXjCXBCXjXZXXffffGfLffffGUfXZXBCaBjXfOffgfgfgfgfgAgfOAgAgAfBBBCCCCffAAAAAfAABCajaDXBXXGfLffLffffGfLfffLUZBDBXXfGfLffOAggAgAgfAgAfAgAgAGGLYBYfWAAAAAAAAAaCXCCXjXLffffLfffLfLffGfGWffPUfUIfOfffggfgfAggfgAgAgAgAfAgBBBCCCfWfAAAAAAAADBCjajXffffLfffUGffffGOfffWfffffffffLfffAgAgfAgAgfgAgAgAgAGBGCXCWfAAAAAAWAADCaBXXfffLffffLffffLffffLfffUfOBfLfffgfOAgfAggAgfAOAfAAgAgBGBBCCffAAAAAAAAAfXBDXgfLfffUgLfffLfGfLfGfUfOffffGffLffAgfgAfgAfgAgfAgAgAfBBBaCCWfWAAAAAAAAAACCXffffBfLfffffLffffGfffffUfWZfOfGffOfAgAggAggAgfAgAfAjCXGLYCCffWAAAAAAAAAWCBfLfLfffffGfLffGfLffLfLfWfffLfGfOfgfAgAgfAgAfAgAgAAgaXRaBBYCCfWAAAAAfAAAAfCXfffffffLfffgfgfgfGfGfffOfWfOfffGffOAfAgAgAgAgAgAAgCXjXCBGCCCWfAAAAAAAAAAACfGOfLfLfffLffOfAOfgLfgWfWffffGfLffgfAgAgAgAgAgAAgfXjaXjXBGCYXffAAAAAAAAAAWGffGfffffLfffgfAgffgffBfffWfBgfgffOfAgAfAAgAgAfAgAgBXDBaCBGCCOfWAAAAAAAAAAAfLfffLfLffgfgAgAgAOfGGfWfWfWGfLfgfgfOAAgAgAfAOAfAgAXBCaCDgOaCfBAAAAAAAAAAAAGffLfffffgfOfAgAgAgfgGWffOfffgffAgfgAgAfAgAgAfAOAfADBaCDCffCCffOAAAAAAAfAgfOfGffGfLffgAfOfAgfAggBfWfWfWGfgOfOAffAgAfAAAgAgAgAjXBBDCBgLYjfOfAgAgAgAgAgAGGfLfffgfOfAgAgAgAfgfWffAfffBgffAgffOAgAAgAgAAAgAgXBaCXBXGXBfffffAgAgAfAgAgBffffLffgAgAgAfAgAgAGfWfAWAAGfOAfAgAgAfAgAfAgAgAAgXBXBCCCBCCfOfOAgAgAgAgAfAjfLfGffOfAgAgAOfAOffAfAAAfAWGfAgfOfgAgAOAgAAgAfAgfCZCaCCCGCCffgAgAfAOfAgAgAIGfOffgAgAfAgAgAgfAIWAAAAAAAGfOfAgAfAgAfAAOfAAgAfABXjCCaCBCCOffAgAgAfAgAgAffffGfOfAgAgAfAfAgAgAAfAAAAAAAgfAgAfOfAgAgAfAAgAAgCXBaCCCCGCXffOfAgAgAgAfAgAGfLffgAfAOfAgAgAfAfAOAAAAAAAffAgAfgAgAgAAgAAgAgAfCBCCCCXBBCGfOfAfAgAfAgAgAOfGfgOfAgAfAOAgAfOfUfAAfAAAAAABgfOfAfAgAfAgAgAfAgCCXBXBCCCGCfffAgAgAgAgAgAfAGOfffAgAgAgAfAgAffOfUfWAAAAWAWgfAgOffAgAgAAAgAADZCCCCCaCCBCGOfOAgAfAgAAgAgAfGfOAfAgAfAgAgAjXDfffOfUffWffffBGAfAOfAgAAggAgAYYCaBCCCCaGCfffAgAgAOAfgAfAOGfgAgAgAgAgAgfXBXBaBXffffWffAfAffGffAgAfAgAAAABYGYCXBXBCCBCfOffAgAAgAgAAgAGfOfAgAAgAgAgABXjaCXjXZCDffDBYYYYYYfGAfOAgAAfDYYYYZCCCCCXBGCffOAfAgAgAAAgAAGfffAgAgAAgADaXBXjXBaBDBYYYYYYYYGYYBYBZfAAfYUGYYBYBCCCaCCCBCfffAgAAfAgAgAgfggOAAgAfAgAXjCjaCXBXBYYYYfYYYGYYYBYYZYCYYYYGYYYBYYBXBCCCCCjYfLAfAgAgAAfAfAGfAgAgAAgAfXjaCXBZCZCYZYBYBYGYYYBYYBYBYZfYfYUZYBYCCBXBXBCCCCCffOAgAAfAgAOAgfOfAAgAgAfjCXXBZCYBYZBCCYZYYYYYZYaBCZCYBYBYBYZCaCBCXBCCCCXCCCGfAfAgAOAfAgABgfAAgAfAfjCajaBXBZXBXBXZBYYCZYBCCCCaCYYBYYYYZCCCCaCCCaCCCCCCCfOfOAfAgAgAAfgfAOfAgAOACXBXBXBXBYZYCZBYYBZYBZCaCZXBZCZYBZBCYBCCCCBCCCCaCCCCfgfAAgAAgAAgAgfAgAAfAffBfXDIaBCXBCZYYYYBaCYYYYfYCBYBYYYBYYYDCCaCCXBXCCCCCCCffOAgAAgAAgAfgAgAAgAOffUIZBBZDZDZBXBYYZYBYBYYBYYaYYBYBCXBCCCCBCCCCCCCCCCCCBfgfAfAgAfAgAfOAfAfAffBjBZjjZIZIXBXBXjYCYaYYZYYBYfYYYYYffXBCaCCXBBCaCBCaCCCCfgAgAgAgAAgAgAAgAOAGGBBZjBZIBIBIZXjaCaBCCBYYCZYBYBfYYgfLYCCBCCCCXBCCXBCCCCCgfgAgAfAOfAAgAgAAfjfBZBBjZjZIZIZIZBXBBXjaXBCZCYYYYYYfgfGCCCXBCaCCCCCCCCCCCBfOfAgAgAgAAgAAfAgfLGZjBjaIBIZjZIBjGBBXBXBCaBXDgAgAfOfffgCCCCCCCCCCaCCCCXBCCffAgAgAgAgAfAgAgAffBBBZjZIZjBBjZgfgBffXBXBXBfgAgAgAfgOfBCCCaBCXBCCCCCCCCCBCGAgAgfAgfAgAOAfAXaXBjZjZjBBIZGfOXIffAfAgAggfOAfAfAgOfffCXBCCCCCCaCCCaCCCCCCZgfgAgAgAgAgAfAfWfBjZBjZIZjZjfgfgfAGOAfAAfAgAAfOAffffgCCCCCCCaCCCCCCCCaCCCCCgfAgAgAgAgAgAfWfDZBjajBBIZIZIfgfAgAAgAgAgAgAgAAfOfOfCCCaBXBCCCCCCCCCCCCCCBCCgfgfAgfAfAffWffBBjZjZjZIZjZgDBfAfgfAgAgAAfAAfGffffCCCCCCCCXBCCCCaCCCCCCCCXBCffAgAAgAGWUfWDZjZBBIZjZjBIZgfjRfAgAAAfAfAAXAAAGGfYCCCCCCCCCCaCCCCaCCCCCCCCCCjfffggCfWfffCjZjjZBIZjZjZjZgfAfAfAfBYAAAAACYAAAAACaCCaCCCCCCCCCCCCCXCCaBCDBCCDBCXZfffWZIBBBBBjBZjZIZjZjZGABBYYYAAAAWfAACYYYBCCCCCCaCCCCCXCCCCCZCCCCaBCDjBDBjXWfWfBZjffffBIBjZjZIBBBAXBYZCAAAfAfAAfAAAACCXBCCCCCaCCCCCCXCCCCCXCCXIaBXXBXjfWfUfBCfWAAffBIBIZjZIjfYXBDXfWfWWYAAAAfACXBCCCaCCCCCCCCCCCCCCXCCCCDXCDBjDBjWffWfUffWAAABfBIBZIBZfBXBaBZAfWfffWAAAACaBCCCCCCCCCCCaCCCCCCCCCCCCCCjCDBXBXffWffWfAAAAAAAAfIBjZIaXjYYBYBAffWAfAAfCCCCCaCCCCCaCCCCCaCCaCCCfUYCBCBXjXjXBfUfWfAfWfAAAXBYYAfBIYBYZCYYYYXfWAAAAACCCCCCCCCCCCCCCCCCCCCCCCCUBfCXCBjXBjaBfWfWfWAfAWfXZXBZYCZCYYaBYZYBfAAAAAAAACaCCaCCCaCCCCCaCCCCCCCCCCUfUBZfXXDjXjBXffffWYBWDAAYYYYZYYABACYBCXAAAAAWfAACCCCCCCCCCCaCBCCCaCCCaCCaCBGBUjUjBjXXBXjWfUWffCGYfAAAfAAAfAAYBAaBYAAAfAfWABYCCCCCCXBCCCCXCCCCCCCCCCCCBBIBBBZXDBjXjCfWfffWaBYWfWAAAAAAAAAAAYACYAAWfAfACCCZCaCCCCCCCCCCCCCCCCCCCYCBBZBjBBjCDBXjXjfWfWajCBffWfWAWAAAAfAAACACAAfWAACCCYCCCCCaCCaCCCCaCCaCCCCCCCBBIBjXBDXjXjXBajUGfXjXDWfWZfgfWAAAXAAAAfAAAAAAXBCCCCCCCCCCCCCCCCCCCCCaCCCCYIBBBBBZjXjXjXjDBjXDCCCBffLfYffGfBBBAAAAAYAAAAACYCCCCCaCCCCCCCaCCCCCCCYCaCCCBBIBjaRDBDajXjXBXBfOfffOfjGLfGfBYXIAWfAAAAAAACYBCCYCCCCCaCCCCCCCaCCCCCCCCCCBIZBDBZXjXjXDBXGfGfgfgOffffGfLjCjfXfBBAAABAACCCCYCCCCCCCCCaCCCCCCCaCCCCYCCCBIBBXBBDBXjXjXGBfgffOffffOffGfXIXDBCaBCXBYCCYBYCCCCCaCCCCCCCCCZCCCCCCZCCCCBBBBBBjXjXjXjCXGBAffgfgfOGfOfGXjXBBjajBjYBYBYBYCCZCCCCCCaCCaCCYCCYCCYCCCBCCUIBjCBCXjXBjXjDBABfffBOfffgfOfGCZBBXBBBXBYCCYCCCCCCCCCCCCCCCCCCCCCCCCBCYUfUfBBIBjCBDCjXBBgDAZjffBffgOfgfOGBDZCBZDBXBCCYBCCCYCCaCCCCCCCCCCCCCCCBCCUBfUfUGBBGBBDZjXjXGXDDBYBfffOffffgfBXBBjXjXBRYCYCYCYCCCCCCCaCCCZCCCCBYCCUfULfULfUBIGBIaCRXjCajBfjfjffRfffPfOfDBjCXDBCBBfCCCCCCCCCCYCCCCYCCCCCBYUBfUGUfUfUfUfBBBBBBjaBXjDBDBgXIBgffOffgfgfCXIaRajCBGYYCYCCCZCCCCZCCCCYYYCUfCUOUUfUfUfWCWBIBBCBXjXjXBDBBZDBZffOfgfgfgBjCCXjBBBBfLYCCCYCCCZCCCCCBCCLYfUfUffUOfULUBUfUBBIBjXjaRajXGBDBDBBjffffUgffBCXjDCCBBGfBCYCCCCCCCCYCBCYUfUfUfLUfUffUUfUfWffBIZBBjXjCjXBXIBDjXBBgfBBbfffBjAfXjBBBGLfCCCYCCYCCCBYYUGUfULUfUfULUUBffLffLfBBBBBXBXjXjjXBXBXBjfBgBBAffBBfgfRZBBBBfBfCCCCYBBYBULUfULUfUfTfUfWffOfOffOffBIBBBjXjXBXDBjXjCjCfBBgDBjXBBfgfBBXIBGGLfCCCCCCUBUfUfUfUfUfUBffOffOfffOfffO"
-},
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel Art Library Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0e0e11;
+    --panel:#17181d;
+    --panel-2:#1e1f26;
+    --line:#2a2b32;
+    --ink:#eae7e0;
+    --dim:#8b8c94;
+    --dim-2:#5f606a;
+    --accent:#3ddc97;
+    --accent-dim:#2a9c6d;
+    --danger:#e5484d;
+    --danger-dim:#a5333a;
+    --warn:#e2b64d;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(circle at 15% 0%, #17181f 0%, transparent 45%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'JetBrains Mono', monospace;
+    min-height:100vh;
+    padding:20px 16px 80px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;}
+  a{color:var(--accent);}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:flex-end;
+    margin-bottom:16px;
+  }
+  .brand h1{
+    font-family:'Press Start 2P', monospace;
+    font-size:15px;line-height:1.7;letter-spacing:.5px;margin:0 0 8px;
+  }
+  .brand h1 span{color:var(--accent);}
+  .brand p{margin:0;color:var(--dim);font-size:12px;max-width:52ch;}
+  .topActions{display:flex;gap:8px;flex-wrap:wrap;}
+
+  button{
+    font-family:inherit;font-size:12px;letter-spacing:.02em;
+    padding:9px 13px;border-radius:8px;border:1px solid var(--line);
+    background:var(--panel-2);color:var(--ink);cursor:pointer;
+    transition:border-color .15s ease, color .15s ease, background .15s ease, transform .1s ease;
+  }
+  button:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+  button:active:not(:disabled){transform:scale(.97);}
+  button:disabled{opacity:.35;cursor:not-allowed;}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#08130e;font-weight:700;}
+  button.primary:hover:not(:disabled){background:var(--accent-dim);border-color:var(--accent-dim);color:#08130e;}
+  button.danger{border-color:var(--danger-dim);color:var(--danger);}
+  button.danger:hover:not(:disabled){background:var(--danger);color:#1a0505;border-color:var(--danger);}
+  button.ghost{background:transparent;}
+  button.small{padding:6px 9px;font-size:11px;border-radius:6px;}
+  button.icon{padding:8px 10px;}
+
+  /* ---------- status bar ---------- */
+  .status{
+    display:flex;align-items:center;gap:10px;
+    font-size:11.5px;color:var(--dim);
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;
+    padding:9px 12px;margin-bottom:14px;
+  }
+  .status .dot{width:8px;height:8px;border-radius:50%;background:var(--dim-2);flex:none;}
+  .status.ok .dot{background:var(--accent);box-shadow:0 0 8px var(--accent);}
+  .status.err .dot{background:var(--danger);box-shadow:0 0 8px var(--danger);}
+  .status.loading .dot{background:var(--warn);animation:pulse 1s infinite ease-in-out;}
+  @keyframes pulse{0%,100%{opacity:.3;}50%{opacity:1;}}
+  .status b{color:var(--ink);font-weight:600;}
+
+  /* ---------- panels ---------- */
+  .panel{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:16px;margin-bottom:14px;
+  }
+  .panel h3{margin:0 0 12px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--dim);}
+  .hidden{display:none !important;}
+
+  .settingsGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}
+  .field label{display:block;font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+  input[type=text], input[type=number], input[type=search], select, textarea{
+    width:100%;background:#101115;color:var(--ink);border:1px solid var(--line);
+    padding:9px 10px;font-family:inherit;font-size:12.5px;border-radius:8px;
+    outline:none;transition:border-color .15s ease;
+  }
+  input:focus, select:focus, textarea:focus{border-color:var(--accent);}
+  textarea{resize:vertical;line-height:1.5;}
+  .hint{font-size:10.5px;color:var(--dim-2);margin-top:8px;line-height:1.5;}
+  .settingsActions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+
+  /* ---------- controls ---------- */
+  .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+  .controls .grow{flex:1 1 220px;}
+  .controls select{width:auto;min-width:130px;}
+  .favToggle{
+    display:flex;align-items:center;gap:7px;font-size:12px;color:var(--dim);
+    border:1px solid var(--line);border-radius:8px;padding:9px 12px;cursor:pointer;user-select:none;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .favToggle.active{border-color:var(--accent);color:var(--accent);}
+  .favToggle .heart{transition:transform .15s ease;}
+  .favToggle.active .heart{transform:scale(1.15);}
+  .resultCount{font-size:11px;color:var(--dim-2);margin-left:auto;white-space:nowrap;}
+
+  /* ---------- grid of cards ---------- */
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;
+  }
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:12px;display:flex;flex-direction:column;gap:10px;
+    animation:fadeUp .25s ease both;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .card:hover{border-color:#3a3c46;transform:translateY(-2px);}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  .card .thumbWrap{
+    position:relative;border-radius:10px;overflow:hidden;background:#000;
+    aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--line);cursor:zoom-in;
+  }
+  .card canvas{image-rendering:pixelated;image-rendering:crisp-edges;width:100%;height:100%;display:block;}
+  .card .favBtn{
+    position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;
+    background:rgba(10,10,12,.65);border:1px solid rgba(255,255,255,.12);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;
+    transition:transform .12s ease, background .12s ease;
+  }
+  .card .favBtn:hover{transform:scale(1.1);}
+  .card .favBtn.active{color:#ff5f87;background:rgba(255,95,135,.15);border-color:#ff5f87;}
+  .card .badge{
+    position:absolute;top:6px;left:6px;font-size:9px;padding:2px 6px;border-radius:5px;
+    background:rgba(0,0,0,.6);border:1px solid var(--line);color:var(--dim);text-transform:uppercase;letter-spacing:.05em;
+  }
+  .card .badge.new{color:var(--accent);border-color:var(--accent-dim);}
+  .card .badge.edited{color:var(--warn);border-color:#7a641f;}
+
+  .card .meta{display:flex;flex-direction:column;gap:2px;}
+  .card .meta .name{font-size:13px;font-weight:700;color:var(--ink);word-break:break-word;}
+  .card .meta .sub{font-size:10.5px;color:var(--dim);display:flex;gap:6px;flex-wrap:wrap;}
+  .card .meta .sub span{background:var(--panel-2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;}
+
+  .card .warnLine{font-size:10px;color:var(--warn);}
+
+  .cardActions{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+  .cardActions button{width:100%;padding:7px 4px;font-size:10.5px;}
+
+  .emptyLib{
+    text-align:center;color:var(--dim);font-size:12.5px;padding:60px 20px;
+    border:1px dashed var(--line);border-radius:14px;
+  }
+
+  /* ---------- modals ---------- */
+  .overlay{
+    position:fixed;inset:0;background:rgba(6,6,8,.72);backdrop-filter:blur(3px);
+    display:flex;align-items:center;justify-content:center;padding:18px;z-index:50;
+    animation:fadeIn .15s ease both;
+  }
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  .modal{
+    background:var(--panel);border:1px solid var(--line);border-radius:16px;
+    padding:20px;max-width:560px;width:100%;max-height:88vh;overflow:auto;
+    animation:pop .18s ease both;
+  }
+  @keyframes pop{from{opacity:0;transform:scale(.96);}to{opacity:1;transform:scale(1);}}
+  .modal h2{
+    font-family:'Press Start 2P', monospace;font-size:12px;margin:0 0 16px;color:var(--ink);letter-spacing:.4px;
+  }
+  .modal .row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
+  .modal .row .field{margin:0;}
+  .modalPreviewRow{display:flex;gap:16px;align-items:flex-start;margin:14px 0;}
+  .modalPreviewRow .thumbWrap{
+    width:110px;height:110px;flex:none;border-radius:10px;overflow:hidden;background:#000;
+    border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+  }
+  .modalPreviewRow canvas{image-rendering:pixelated;width:100%;height:100%;}
+  .modalPreviewRow .info{font-size:11px;color:var(--dim);line-height:1.7;}
+  .modalPreviewRow .info b{color:var(--ink);}
+  .modalPreviewRow .info .err{color:var(--danger);}
+  .modalPreviewRow .info .ok{color:var(--accent);}
+  .modalActions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;}
+
+  .uploadZone{
+    border:1px dashed var(--line);border-radius:12px;padding:22px 14px;text-align:center;
+    cursor:pointer;transition:border-color .15s ease, background .15s ease;margin-bottom:14px;
+  }
+  .uploadZone:hover, .uploadZone.drag{border-color:var(--accent);background:#151a17;}
+  .uploadZone input{display:none;}
+  .uploadZone .icon{font-size:22px;color:var(--accent);margin-bottom:6px;}
+  .uploadZone .txt{font-size:12px;color:var(--dim);}
+  .uploadZone .txt b{color:var(--ink);}
+  .uploadZone .formats{font-size:10px;color:var(--dim-2);margin-top:6px;}
+  .uploadStatus{
+    display:flex;align-items:center;gap:8px;font-size:11px;color:var(--dim);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:8px;
+    padding:8px 10px;margin:-6px 0 14px;
+  }
+  .uploadStatus.ok{color:var(--accent);border-color:var(--accent-dim);}
+  .uploadStatus .clearUpload{margin-left:auto;color:var(--dim);cursor:pointer;text-decoration:underline;font-size:10.5px;}
+  .uploadStatus .clearUpload:hover{color:var(--danger);}
+
+  .ditherRow{
+    display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim);
+    margin:-6px 0 14px;user-select:none;cursor:pointer;
+  }
+  .ditherRow input[type=checkbox]{
+    width:16px;height:16px;accent-color:var(--accent);cursor:pointer;
+  }
+  .ditherRow span.lbl{color:var(--ink);}
+  .ditherRow .sub{color:var(--dim-2);font-size:10.5px;}
+
+  details.advanced{margin-top:2px;}
+  details.advanced summary{
+    font-size:10.5px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;
+    cursor:pointer;user-select:none;padding:4px 0;
+  }
+  details.advanced summary:hover{color:var(--ink);}
+  details.advanced .field{margin-top:8px;}
+
+  .codeBox{
+    background:#0b0c0f;border:1px solid var(--line);border-radius:10px;
+    padding:12px;font-size:11px;line-height:1.6;color:var(--accent);
+    white-space:pre-wrap;word-break:break-all;max-height:280px;overflow:auto;margin-top:8px;
+  }
+
+  .viewModal{max-width:520px;text-align:center;}
+  .viewModal .bigThumb{
+    width:min(70vw,420px);height:min(70vw,420px);margin:0 auto 14px;
+    border-radius:12px;overflow:hidden;border:1px solid var(--line);background:#000;
+  }
+  .viewModal .bigThumb canvas{image-rendering:pixelated;width:100%;height:100%;}
+
+  .close{
+    position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;
+    background:var(--panel-2);border:1px solid var(--line);display:flex;align-items:center;
+    justify-content:center;cursor:pointer;color:var(--dim);
+  }
+  .modal{position:relative;}
+
+  footer{margin-top:26px;color:var(--dim-2);font-size:10.5px;text-align:center;line-height:1.7;}
+
+  ::-webkit-scrollbar{width:9px;height:9px;}
+  ::-webkit-scrollbar-thumb{background:#2a2b32;border-radius:8px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <h1>PIXEL ART <span>LIBRARY</span></h1>
+      <p>Every entry is decoded live from its data string against the fixed 36-color palette. Nothing is stored as an image file.</p>
+    </div>
+    <div class="topActions">
+      <button id="addBtn" class="primary">+ Add Image</button>
+      <button id="exportBtn">Export Library</button>
+      <button id="reloadBtn">⟳ Reload</button>
+      <button id="settingsBtn">⚙ Source</button>
+    </div>
+  </div>
+
+  <div id="statusBar" class="status">
+    <span class="dot"></span>
+    <span id="statusText">Not connected yet — set your GitHub source below.</span>
+  </div>
+
+  <section id="settingsPanel" class="panel hidden">
+    <h3>GitHub Source</h3>
+    <div class="field">
+      <label>Library URL</label>
+      <input type="text" id="cfgUrl" placeholder="https://github.com/owner/repo/blob/main/Data%20String%20Library">
+    </div>
+    <p class="hint">
+      Paste the normal GitHub page URL for your library file (the one you see when viewing it on github.com — a
+      <code>/blob/</code> link). It's automatically converted to the raw.githubusercontent.com URL for fetching.
+      A <code>raw.githubusercontent.com</code> URL also works directly. This site accepts either a plain JSON array
+      or a JS file like <code>const LIBRARY = [ {...}, {...} ];</code> — it just needs to contain an array of entry objects.
+    </p>
+    <div class="settingsActions">
+      <button id="connectBtn" class="primary">Save &amp; Load</button>
+      <button id="resetSourceBtn" class="danger">Reset Source Settings</button>
+      <button id="settingsCloseBtn" class="ghost">Close</button>
+    </div>
+  </section>
+
+  <section class="panel controls">
+    <div class="field grow" style="margin:0;">
+      <input type="search" id="searchInput" placeholder="Search by name, category, or author…">
+    </div>
+    <select id="categorySelect"><option value="">All categories</option></select>
+    <select id="sizeSelect"><option value="">All sizes</option></select>
+    <div class="favToggle" id="favToggle"><span class="heart">♥</span> Favorites only</div>
+    <div class="resultCount" id="resultCount"></div>
+  </section>
+
+  <section id="grid" class="grid"></section>
+  <div id="emptyLib" class="emptyLib hidden">No images to show yet.</div>
+
+  <footer>
+    All decoding happens locally in your browser, straight from the data strings. Add / Edit / Delete only change what you see here —
+    to persist changes, use <b>Export Library</b> and paste the result into your GitHub file.
+  </footer>
+</div>
+
+<!-- Add / Edit modal -->
+<div class="overlay hidden" id="formOverlay">
+  <div class="modal" id="formModal">
+    <div class="close" id="formCloseBtn">✕</div>
+    <h2 id="formTitle">ADD IMAGE</h2>
+
+    <div class="uploadZone" id="uploadZone">
+      <div class="icon">&#9635;</div>
+      <div class="txt"><b>Click to upload</b> or drag an image here</div>
+      <div class="formats">PNG · JPG · JPEG · WEBP — converted locally, never uploaded anywhere</div>
+      <input type="file" id="uploadInput" accept="image/png,image/jpeg,image/webp">
+    </div>
+    <div class="uploadStatus hidden" id="uploadStatus">
+      <span id="uploadStatusText"></span>
+      <span class="clearUpload" id="clearUploadBtn">clear image</span>
+    </div>
+
+    <label class="ditherRow" for="ditherCheckbox">
+      <input type="checkbox" id="ditherCheckbox" checked>
+      <span class="lbl">Enable dithering</span>
+      <span class="sub">(Floyd–Steinberg, applied before matching the 36-color palette)</span>
+    </label>
+
+    <div class="row">
+      <div class="field">
+        <label>Name</label>
+        <input type="text" id="fName" placeholder="Image name">
+      </div>
+      <div class="field">
+        <label>Category</label>
+        <input type="text" id="fCategory" placeholder="Category" list="categoryList">
+        <datalist id="categoryList"></datalist>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Size (grid width/height)</label>
+        <input type="number" id="fSize" placeholder="75" min="1" step="1">
+      </div>
+      <div class="field">
+        <label>Author</label>
+        <input type="text" id="fAuthor" placeholder="Author">
+      </div>
+    </div>
+
+    <details class="advanced" id="advancedDetails">
+      <summary>Advanced: edit data string manually</summary>
+      <div class="field">
+        <label>Data string</label>
+        <textarea id="fData" rows="5" placeholder="ABCD......"></textarea>
+      </div>
+    </details>
+
+    <div class="modalPreviewRow">
+      <div class="thumbWrap"><canvas id="fPreviewCanvas" width="1" height="1"></canvas></div>
+      <div class="info" id="fInfo">Upload an image, or open "Advanced" to paste a data string.</div>
+    </div>
+
+    <div class="modalActions">
+      <button id="formCancelBtn" class="ghost">Cancel</button>
+      <button id="formSaveBtn" class="primary">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Generated code modal -->
+<div class="overlay hidden" id="codeOverlay">
+  <div class="modal" id="codeModalEl">
+    <div class="close" id="codeCloseBtn">✕</div>
+    <h2 id="codeTitle">PASTE INTO GITHUB</h2>
+    <p class="hint" id="codeSubtitle">Copy this and paste it into your library file on GitHub.</p>
+    <div class="codeBox" id="codeText"></div>
+    <div class="modalActions">
+      <button id="codeCopyBtn" class="primary">Copy to Clipboard</button>
+      <button id="codeDoneBtn" class="ghost">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- Large view modal -->
+<div class="overlay hidden" id="viewOverlay">
+  <div class="modal viewModal" id="viewModalEl">
+    <div class="close" id="viewCloseBtn">✕</div>
+    <h2 id="viewTitle">NAME</h2>
+    <div class="bigThumb"><canvas id="viewCanvas" width="1" height="1"></canvas></div>
+    <div class="info" id="viewInfo" style="font-size:11.5px;color:var(--dim);"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   PALETTE — exact mapping, character -> [r,g,b]
+   ============================================================ */
+const PALETTE = [
+  ["White",[255,255,255],"A"],
+  ["Grey",[99,95,98],"B"],
+  ["Smoky Grey",[70,96,117],"C"],
+  ["Black",[0,0,0],"D"],
+  ["Red",[196,40,28],"E"],
+  ["Dark Red",[117,0,0],"F"],
+  ["Reddish Orange",[217,133,108],"G"],
+  ["Orange",[218,133,65],"H"],
+  ["Dark Orange",[139,84,41],"I"],
+  ["Yellowish Orange",[226,155,64],"J"],
+  ["Yellow",[245,205,48],"K"],
+  ["Yellowish Green",[145,212,84],"L"],
+  ["Light Green",[43,255,111],"M"],
+  ["Lime Green",[35,244,46],"N"],
+  ["Bright Green",[203,255,154],"O"],
+  ["Green",[75,151,75],"P"],
+  ["Dark Green",[0,97,0],"Q"],
+  ["Forest Green",[51,104,6],"R"],
+  ["Blueish Green",[0,143,156],"S"],
+  ["Teal",[61,255,208],"T"],
+  ["Cyan",[61,171,238],"U"],
+  ["Sky Blue",[61,171,238],"V"],
+  ["Blue",[174,255,254],"W"],
+  ["Dark Blue",[0,32,96],"X"],
+  ["Blueish Purple",[67,84,147],"Y"],
+  ["Purple",[107,50,124],"Z"],
+  ["Dark Purple",[61,21,133],"a"],
+  ["Pink",[255,102,204],"b"],
+  ["Bright Pink",[254,119,254],"c"],
+  ["Hot Pink",[250,0,173],"d"],
+  ["Dark Pink",[235,1,96],"e"],
+  ["Reddish Purple",[229,173,200],"f"],
+  ["Peach",[249,190,156],"g"],
+  ["Light Brown",[204,153,0],"h"],
+  ["Brown",[153,102,0],"i"],
+  ["Dark Brown",[102,51,0],"j"]
+];
+const CHAR_MAP = new Map(PALETTE.map(([name, rgb, ch]) => [ch, rgb]));
+const UNKNOWN_RGB = [255,0,255]; // used only if a character isn't in the palette
+
+function nearestPaletteChar(r, g, b){
+  return nearestPaletteMatch(r, g, b).ch;
+}
+function nearestPaletteMatch(r, g, b){
+  let bestCh = PALETTE[0][2];
+  let bestRgb = PALETTE[0][1];
+  let bestDist = Infinity;
+  for(let i = 0; i < PALETTE.length; i++){
+    const p = PALETTE[i][1];
+    const dr = r - p[0], dg = g - p[1], db = b - p[2];
+    const dist = Math.sqrt(dr*dr + dg*dg + db*db);
+    if(dist < bestDist){ bestDist = dist; bestCh = PALETTE[i][2]; bestRgb = p; }
+  }
+  return { ch: bestCh, rgb: bestRgb };
+}
+
+/* Converts an uploaded <img> into a data string using the EXACT same
+   pixel order as the original converter's export loop:
+   for (y = size-1; y >= 0; y--) for (x = 0; x < size; x++) stream += grid[y][x]
+   Center-crops to a square first so the grid stays 1:1 with the palette-based decoder.
+   When useDither is true, Floyd-Steinberg error diffusion runs in standard raster
+   order (top-to-bottom, left-to-right) BEFORE the pixels are re-ordered into the
+   bottom-first export stream — the encoding itself never changes. */
+function convertImageToDataString(img, size, useDither){
+  size = Math.max(1, size|0);
+  const side = Math.min(img.width, img.height);
+  const sx = (img.width - side) / 2;
+  const sy = (img.height - side) / 2;
+
+  const work = document.createElement('canvas');
+  work.width = size; work.height = size;
+  const ctx = work.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(img, sx, sy, side, side, 0, 0, size, size);
+
+  const imgData = ctx.getImageData(0, 0, size, size).data;
+
+  // float buffer for error diffusion, row-major, y=0 at the top (matches canvas rows)
+  const buf = new Float32Array(size * size * 3);
+  for(let i = 0; i < size * size; i++){
+    buf[i*3] = imgData[i*4]; buf[i*3+1] = imgData[i*4+1]; buf[i*3+2] = imgData[i*4+2];
+  }
+  const clamp = v => v < 0 ? 0 : v > 255 ? 255 : v;
+
+  // grid[y][x] with y=0 at the top row, matching canvas row order
+  const grid = [];
+  for(let y = 0; y < size; y++) grid.push(new Array(size));
+
+  for(let y = 0; y < size; y++){
+    for(let x = 0; x < size; x++){
+      const i = y * size + x;
+      const r = buf[i*3], g = buf[i*3+1], b = buf[i*3+2];
+      const { ch, rgb } = nearestPaletteMatch(r, g, b);
+      grid[y][x] = ch;
+
+      if(useDither){
+        const er = r - rgb[0], eg = g - rgb[1], eb = b - rgb[2];
+        const spread = (xx, yy, f) => {
+          if(xx >= 0 && xx < size && yy >= 0 && yy < size){
+            const j = (yy * size + xx) * 3;
+            buf[j]   = clamp(buf[j]   + er * f);
+            buf[j+1] = clamp(buf[j+1] + eg * f);
+            buf[j+2] = clamp(buf[j+2] + eb * f);
+          }
+        };
+        spread(x+1, y,   7/16);
+        spread(x-1, y+1, 3/16);
+        spread(x,   y+1, 5/16);
+        spread(x+1, y+1, 1/16);
+      }
+    }
+  }
+
+  // encode: bottom row first, left to right, moving upward — identical to the original exporter
+  let stream = '';
+  for(let y = size - 1; y >= 0; y--){
+    for(let x = 0; x < size; x++){
+      stream += grid[y][x];
+    }
+  }
+  return stream;
+}
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const CONFIG_KEY = 'pal_lib_config_v1';
+const FAV_KEY = 'pal_lib_favorites_v1';
+
+const DEFAULT_CONFIG = {
+  url: 'https://github.com/user214kh-tech/Blocks-Build/blob/main/Data%20String%20Library'
+};
+let rawSaved = loadJSON(CONFIG_KEY, {});
+
+// Migrate old owner/repo/branch/path settings (from a previous version of this app)
+// into a single blob URL, so existing users don't lose their saved source.
+if(rawSaved && !rawSaved.url && rawSaved.owner && rawSaved.repo){
+  const encPath = String(rawSaved.path || '').split('/').map(encodeURIComponent).join('/');
+  rawSaved = { url: `https://github.com/${encodeURIComponent(rawSaved.owner)}/${encodeURIComponent(rawSaved.repo)}/blob/${encodeURIComponent(rawSaved.branch || 'main')}/${encPath}` };
+  saveJSON(CONFIG_KEY, rawSaved);
+}
+
+let config = Object.assign({}, DEFAULT_CONFIG, rawSaved);
+
+// Auto-fix a previously cached wrong path (old default incorrectly had ".js")
+if(config.url && config.url.endsWith('Data%20String%20Library.js')){
+  config.url = config.url.replace('Data%20String%20Library.js', 'Data%20String%20Library');
+  saveJSON(CONFIG_KEY, config);
+}
+
+/* Turns a github.com "blob" page URL (or an already-raw URL) into the
+   raw.githubusercontent.com URL, plus a GitHub API contents URL as a fallback. */
+function deriveUrls(sourceUrl){
+  const url = (sourceUrl || '').trim();
+  let owner, repo, branch, path;
+
+  let m = url.match(/^https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/blob\/([^\/]+)\/(.+)$/);
+  if(m){
+    [, owner, repo, branch, path] = m;
+  } else {
+    m = url.match(/^https:\/\/raw\.githubusercontent\.com\/([^\/]+)\/([^\/]+)\/([^\/]+)\/(.+)$/);
+    if(m) [, owner, repo, branch, path] = m;
+  }
+  if(!owner) return null;
+
+  const decodedPath = decodeURIComponent(path);
+  const encPath = decodedPath.split('/').map(encodeURIComponent).join('/');
+
+  return {
+    owner, repo, branch,
+    path: decodedPath,
+    rawUrl: `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encPath}`,
+    apiUrl: `https://api.github.com/repos/${owner}/${repo}/contents/${encPath}?ref=${encodeURIComponent(branch)}`
+  };
+}
+
+let favorites = new Set(loadJSON(FAV_KEY, []));
+let entries = [];       // working list, each item: {..fields, _status:'base'|'new'|'edited', _deleted:bool}
+let nextLocalId = 1;
+let editingId = null;   // id currently being edited, or null when adding
+
+function loadJSON(key, fallback){
+  try{
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  }catch(e){ return fallback; }
+}
+function saveJSON(key, val){
+  try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){}
+}
+
+/* ============================================================
+   DECODING — reverse of:
+   for (y = GRID-1; y >= 0; y--) for (x = 0; x < GRID; x++) stream += grid[y][x]
+   ============================================================ */
+function decodeDataString(dataStr, size){
+  const total = size * size;
+  const imageData = new ImageData(Math.max(size,1), Math.max(size,1));
+  let unknown = 0;
+  let idx = 0;
+  for(let y = size - 1; y >= 0; y--){
+    for(let x = 0; x < size; x++){
+      const ch = idx < dataStr.length ? dataStr[idx] : undefined;
+      idx++;
+      let rgb = UNKNOWN_RGB;
+      if(ch !== undefined && CHAR_MAP.has(ch)){
+        rgb = CHAR_MAP.get(ch);
+      } else {
+        unknown++;
+      }
+      const p = (y * size + x) * 4;
+      imageData.data[p] = rgb[0];
+      imageData.data[p+1] = rgb[1];
+      imageData.data[p+2] = rgb[2];
+      imageData.data[p+3] = 255;
+    }
+  }
+  return { imageData, unknown, expectedLength: total, actualLength: dataStr.length };
+}
+
+function renderToCanvas(canvas, dataStr, size){
+  size = Math.max(1, size|0);
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  if(!dataStr){ ctx.clearRect(0,0,size,size); return {unknown:0, expectedLength:size*size, actualLength:0}; }
+  const { imageData, unknown, expectedLength, actualLength } = decodeDataString(dataStr, size);
+  ctx.putImageData(imageData, 0, 0);
+  return { unknown, expectedLength, actualLength };
+}
+
+/* ============================================================
+   GITHUB FETCH + PARSING
+   ============================================================ */
+const statusBar = document.getElementById('statusBar');
+const statusText = document.getElementById('statusText');
+
+function setStatus(kind, text){
+  statusBar.className = 'status ' + (kind || '');
+  statusText.innerHTML = text;
+}
+
+function parseLibraryText(text){
+  text = text.trim();
+  // strip byte-order marks etc
+  const start = text.indexOf('[');
+  const end = text.lastIndexOf(']');
+  if(start === -1 || end === -1 || end < start){
+    throw new Error('Could not find a [ ... ] array in the file.');
+  }
+  const arrayText = text.slice(start, end + 1);
+  try{
+    return JSON.parse(arrayText);
+  }catch(e){ /* fall through to JS eval */ }
+  try{
+    const fn = new Function('"use strict"; return (' + arrayText + ');');
+    return fn();
+  }catch(e2){
+    throw new Error('Found an array but could not parse it: ' + e2.message);
+  }
+}
+
+async function fetchLibrary(){
+  const urls = deriveUrls(config.url);
+  if(!urls){
+    setStatus('err', `That doesn't look like a GitHub file URL. Use a page like <b>https://github.com/owner/repo/blob/main/path</b>.`);
+    return false;
+  }
+
+  setStatus('loading', `Loading <b>${escapeHtml(urls.path)}</b> from <b>${escapeHtml(urls.owner)}/${escapeHtml(urls.repo)}</b> (${escapeHtml(urls.branch)})…`);
+  let text = null;
+  let lastErr = null;
+
+  // 1. try raw.githubusercontent.com (derived from the blob URL)
+  try{
+    const res = await fetch(urls.rawUrl, { cache: 'no-store' });
+    if(res.ok){ text = await res.text(); }
+    else lastErr = new Error(`raw file request failed (${res.status})`);
+  }catch(e){ lastErr = e; }
+
+  // 2. fall back to the GitHub contents API (base64)
+  if(text === null){
+    try{
+      const res = await fetch(urls.apiUrl, { cache: 'no-store' });
+      if(res.ok){
+        const json = await res.json();
+        if(json.content){
+          text = decodeURIComponent(escape(atob(json.content.replace(/\n/g,''))));
+        } else {
+          lastErr = new Error('API response had no file content.');
+        }
+      } else {
+        lastErr = new Error(`GitHub API request failed (${res.status})`);
+      }
+    }catch(e){ lastErr = e; }
+  }
+
+  if(text === null){
+    setStatus('err', `Couldn't load the library. ${escapeHtml(lastErr ? lastErr.message : 'Unknown error')} — check the Library URL in Source settings.`);
+    return false;
+  }
+
+  let parsed;
+  try{
+    parsed = parseLibraryText(text);
+    if(!Array.isArray(parsed)) throw new Error('File did not contain an array.');
+  }catch(e){
+    setStatus('err', `Loaded the file but couldn't parse it: ${escapeHtml(e.message)}`);
+    return false;
+  }
+
+  entries = parsed.map(e => normalizeEntry(e, 'base'));
+  nextLocalId = entries.reduce((m, e) => Math.max(m, Number(e.id) || 0), 0) + 1;
+  setStatus('ok', `Loaded <b>${entries.length}</b> image${entries.length===1?'':'s'} from GitHub.`);
+  refreshFilterOptions();
+  applyFiltersAndRender();
+  return true;
+}
+
+function normalizeEntry(e, status){
+  return {
+    id: e.id,
+    name: e.name || 'Untitled',
+    size: Number(e.size) || 0,
+    category: e.category || 'Uncategorized',
+    author: e.author || '',
+    data: e.data || '',
+    _status: status,
+    _deleted: false
+  };
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ============================================================
+   FILTER / SEARCH / RENDER
+   ============================================================ */
+const gridEl = document.getElementById('grid');
+const emptyLibEl = document.getElementById('emptyLib');
+const searchInput = document.getElementById('searchInput');
+const categorySelect = document.getElementById('categorySelect');
+const sizeSelect = document.getElementById('sizeSelect');
+const favToggle = document.getElementById('favToggle');
+const resultCount = document.getElementById('resultCount');
+
+let favOnly = false;
+
+function refreshFilterOptions(){
+  const cats = [...new Set(entries.filter(e=>!e._deleted).map(e => e.category))].sort((a,b)=>a.localeCompare(b));
+  const sizes = [...new Set(entries.filter(e=>!e._deleted).map(e => e.size))].sort((a,b)=>a-b);
+
+  const curCat = categorySelect.value;
+  categorySelect.innerHTML = '<option value="">All categories</option>' +
+    cats.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+  if(cats.includes(curCat)) categorySelect.value = curCat;
+
+  const curSize = sizeSelect.value;
+  sizeSelect.innerHTML = '<option value="">All sizes</option>' +
+    sizes.map(s => `<option value="${s}">${s} × ${s}</option>`).join('');
+  if(sizes.map(String).includes(curSize)) sizeSelect.value = curSize;
+
+  document.getElementById('categoryList').innerHTML = cats.map(c => `<option value="${escapeHtml(c)}">`).join('');
+}
+
+function currentFiltered(){
+  const q = searchInput.value.trim().toLowerCase();
+  const cat = categorySelect.value;
+  const size = sizeSelect.value;
+
+  return entries.filter(e => {
+    if(e._deleted) return false;
+    if(favOnly && !favorites.has(String(e.id))) return false;
+    if(cat && e.category !== cat) return false;
+    if(size && String(e.size) !== size) return false;
+    if(q){
+      const hay = `${e.name} ${e.category} ${e.author}`.toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
+function applyFiltersAndRender(){
+  const list = currentFiltered();
+  resultCount.textContent = `${list.length} of ${entries.filter(e=>!e._deleted).length} shown`;
+  gridEl.innerHTML = '';
+  emptyLibEl.classList.toggle('hidden', list.length > 0);
+  list.forEach(entry => gridEl.appendChild(buildCard(entry)));
+}
+
+function buildCard(entry){
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  const thumbWrap = document.createElement('div');
+  thumbWrap.className = 'thumbWrap';
+
+  if(entry._status === 'new'){
+    const b = document.createElement('div'); b.className = 'badge new'; b.textContent = 'new'; thumbWrap.appendChild(b);
+  } else if(entry._status === 'edited'){
+    const b = document.createElement('div'); b.className = 'badge edited'; b.textContent = 'edited'; thumbWrap.appendChild(b);
+  }
+
+  const favBtn = document.createElement('div');
+  favBtn.className = 'favBtn' + (favorites.has(String(entry.id)) ? ' active' : '');
+  favBtn.textContent = '♥';
+  favBtn.title = 'Toggle favorite';
+  favBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const key = String(entry.id);
+    if(favorites.has(key)) favorites.delete(key); else favorites.add(key);
+    saveJSON(FAV_KEY, [...favorites]);
+    favBtn.classList.toggle('active');
+    if(favOnly) applyFiltersAndRender();
+  });
+
+  const canvas = document.createElement('canvas');
+  const meta = renderToCanvas(canvas, entry.data, entry.size);
+
+  thumbWrap.appendChild(canvas);
+  thumbWrap.appendChild(favBtn);
+  thumbWrap.addEventListener('click', () => openViewModal(entry));
+
+  const metaEl = document.createElement('div');
+  metaEl.className = 'meta';
+  metaEl.innerHTML = `
+    <div class="name">${escapeHtml(entry.name)}</div>
+    <div class="sub">
+      <span>${entry.size}×${entry.size}</span>
+      <span>${escapeHtml(entry.category)}</span>
+      ${entry.author ? `<span>by ${escapeHtml(entry.author)}</span>` : ''}
+    </div>
+  `;
+  if(meta.actualLength !== meta.expectedLength || meta.unknown > 0){
+    const warn = document.createElement('div');
+    warn.className = 'warnLine';
+    const parts = [];
+    if(meta.actualLength !== meta.expectedLength) parts.push(`length ${meta.actualLength}/${meta.expectedLength}`);
+    if(meta.unknown > 0) parts.push(`${meta.unknown} unknown char${meta.unknown===1?'':'s'}`);
+    warn.textContent = '⚠ ' + parts.join(' · ');
+    metaEl.appendChild(warn);
+  }
+
+  const actions = document.createElement('div');
+  actions.className = 'cardActions';
+
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'small';
+  copyBtn.textContent = 'Copy Data';
+  copyBtn.addEventListener('click', () => copyText(entry.data, copyBtn));
+
+  const editBtn = document.createElement('button');
+  editBtn.className = 'small';
+  editBtn.textContent = 'Edit';
+  editBtn.addEventListener('click', () => openFormModal(entry));
+
+  const delBtn = document.createElement('button');
+  delBtn.className = 'small danger';
+  delBtn.textContent = 'Delete';
+  delBtn.addEventListener('click', () => {
+    if(!confirm(`Remove "${entry.name}" from the library view? This won't touch GitHub until you export.`)) return;
+    entry._deleted = true;
+    applyFiltersAndRender();
+  });
+
+  actions.append(copyBtn, editBtn, delBtn);
+  card.append(thumbWrap, metaEl, actions);
+  return card;
+}
+
+function copyText(text, btn){
+  const done = () => {
+    if(!btn) return;
+    const old = btn.textContent;
+    btn.textContent = 'Copied ✓';
+    setTimeout(() => btn.textContent = old, 1200);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+function fallbackCopy(text, cb){
+  const ta = document.createElement('textarea');
+  ta.value = text; document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+  if(cb) cb();
+}
+
+searchInput.addEventListener('input', applyFiltersAndRender);
+categorySelect.addEventListener('change', applyFiltersAndRender);
+sizeSelect.addEventListener('change', applyFiltersAndRender);
+favToggle.addEventListener('click', () => {
+  favOnly = !favOnly;
+  favToggle.classList.toggle('active', favOnly);
+  applyFiltersAndRender();
+});
+
+/* ============================================================
+   VIEW MODAL
+   ============================================================ */
+const viewOverlay = document.getElementById('viewOverlay');
+const viewCanvas = document.getElementById('viewCanvas');
+const viewTitle = document.getElementById('viewTitle');
+const viewInfo = document.getElementById('viewInfo');
+
+function openViewModal(entry){
+  viewTitle.textContent = entry.name;
+  const meta = renderToCanvas(viewCanvas, entry.data, entry.size);
+  const bits = [`<b>${entry.size}×${entry.size}</b>`, escapeHtml(entry.category)];
+  if(entry.author) bits.push('by ' + escapeHtml(entry.author));
+  if(meta.actualLength !== meta.expectedLength) bits.push(`<span style="color:var(--danger)">length ${meta.actualLength}/${meta.expectedLength}</span>`);
+  if(meta.unknown > 0) bits.push(`<span style="color:var(--danger)">${meta.unknown} unknown chars</span>`);
+  viewInfo.innerHTML = bits.join(' &nbsp;·&nbsp; ');
+  viewOverlay.classList.remove('hidden');
+}
+document.getElementById('viewCloseBtn').addEventListener('click', () => viewOverlay.classList.add('hidden'));
+viewOverlay.addEventListener('click', (e) => { if(e.target === viewOverlay) viewOverlay.classList.add('hidden'); });
+
+/* ============================================================
+   ADD / EDIT MODAL
+   ============================================================ */
+const formOverlay = document.getElementById('formOverlay');
+const formTitle = document.getElementById('formTitle');
+const fName = document.getElementById('fName');
+const fCategory = document.getElementById('fCategory');
+const fSize = document.getElementById('fSize');
+const fAuthor = document.getElementById('fAuthor');
+const fData = document.getElementById('fData');
+const fPreviewCanvas = document.getElementById('fPreviewCanvas');
+const fInfo = document.getElementById('fInfo');
+const advancedDetails = document.getElementById('advancedDetails');
+const uploadZone = document.getElementById('uploadZone');
+const uploadInput = document.getElementById('uploadInput');
+const uploadStatus = document.getElementById('uploadStatus');
+const uploadStatusText = document.getElementById('uploadStatusText');
+const clearUploadBtn = document.getElementById('clearUploadBtn');
+const ditherCheckbox = document.getElementById('ditherCheckbox');
+
+let uploadedImage = null; // the <img> currently driving the auto-generated data string (never persisted)
+
+function setUploadStatus(text, ok){
+  uploadStatus.classList.remove('hidden');
+  uploadStatus.classList.toggle('ok', !!ok);
+  uploadStatusText.textContent = text;
+}
+function clearUpload(silent){
+  uploadedImage = null;
+  uploadInput.value = '';
+  uploadStatus.classList.add('hidden');
+  if(!silent) updateFormPreview();
+}
+clearUploadBtn.addEventListener('click', (e) => { e.stopPropagation(); clearUpload(); });
+
+function handleUploadFile(file){
+  if(!file) return;
+  const okTypes = ['image/png','image/jpeg','image/webp'];
+  if(!okTypes.includes(file.type)){
+    setUploadStatus('Unsupported file type — use PNG, JPG, JPEG, or WEBP.', false);
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const img = new Image();
+    img.onload = () => {
+      uploadedImage = img;
+      setUploadStatus(`Converting "${file.name}" (${img.width}×${img.height} → ${fSize.value || '?'}×${fSize.value || '?'})…`, false);
+      convertUploadedImage();
+    };
+    img.onerror = () => setUploadStatus('Could not read that image file.', false);
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function convertUploadedImage(){
+  if(!uploadedImage) return;
+  const size = parseInt(fSize.value, 10);
+  if(!size || size <= 0){
+    setUploadStatus('Set a size above, then it will convert automatically.', false);
+    return;
+  }
+  const useDither = ditherCheckbox.checked;
+  const stream = convertImageToDataString(uploadedImage, size, useDither);
+  fData.value = stream;
+  setUploadStatus(`Converted to ${size}×${size} (${stream.length} characters)${useDither ? ' with dithering' : ''}.`, true);
+  updateFormPreview();
+}
+
+uploadZone.addEventListener('click', () => uploadInput.click());
+uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('drag'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
+uploadZone.addEventListener('drop', (e) => {
+  e.preventDefault(); uploadZone.classList.remove('drag');
+  if(e.dataTransfer.files && e.dataTransfer.files[0]) handleUploadFile(e.dataTransfer.files[0]);
+});
+uploadInput.addEventListener('change', () => {
+  if(uploadInput.files && uploadInput.files[0]) handleUploadFile(uploadInput.files[0]);
+});
+ditherCheckbox.addEventListener('change', () => {
+  if(uploadedImage) convertUploadedImage();
+});
+
+function openFormModal(entry){
+  editingId = entry ? entry.id : null;
+  formTitle.textContent = entry ? 'EDIT IMAGE' : 'ADD IMAGE';
+  fName.value = entry ? entry.name : '';
+  fCategory.value = entry ? entry.category : '';
+  fSize.value = entry ? entry.size : (entries[0] ? entries[0].size : 75);
+  fAuthor.value = entry ? entry.author : '';
+  fData.value = entry ? entry.data : '';
+  ditherCheckbox.checked = true;
+  clearUpload(true);
+  advancedDetails.open = !!entry && !!entry.data;
+  updateFormPreview();
+  formOverlay.classList.remove('hidden');
+  fName.focus();
+}
+function closeFormModal(){
+  formOverlay.classList.add('hidden');
+  editingId = null;
+  clearUpload(true);
+}
+document.getElementById('addBtn').addEventListener('click', () => openFormModal(null));
+document.getElementById('formCloseBtn').addEventListener('click', closeFormModal);
+document.getElementById('formCancelBtn').addEventListener('click', closeFormModal);
+formOverlay.addEventListener('click', (e) => { if(e.target === formOverlay) closeFormModal(); });
+
+function updateFormPreview(){
+  const size = parseInt(fSize.value, 10) || 0;
+  const data = fData.value.trim();
+  if(!size || !data){
+    fPreviewCanvas.width = 1; fPreviewCanvas.height = 1;
+    fPreviewCanvas.getContext('2d').clearRect(0,0,1,1);
+    fInfo.innerHTML = 'Enter a size and a data string to preview it here.';
+    return;
+  }
+  const meta = renderToCanvas(fPreviewCanvas, data, size);
+  const lengthOk = meta.actualLength === meta.expectedLength;
+  const parts = [
+    `Expected length: <b>${meta.expectedLength}</b>`,
+    `Actual length: <b class="${lengthOk?'ok':'err'}">${meta.actualLength}</b>`
+  ];
+  if(meta.unknown > 0) parts.push(`<span class="err">${meta.unknown} character(s) not in the palette</span>`);
+  else parts.push('<span class="ok">All characters recognized</span>');
+  fInfo.innerHTML = parts.join('<br>');
+}
+[fSize, fData].forEach(el => el.addEventListener('input', () => {
+  if(uploadedImage && el === fSize) convertUploadedImage();
+  else updateFormPreview();
+}));
+
+document.getElementById('formSaveBtn').addEventListener('click', () => {
+  const name = fName.value.trim();
+  const category = fCategory.value.trim() || 'Uncategorized';
+  const size = parseInt(fSize.value, 10);
+  const author = fAuthor.value.trim();
+  const data = fData.value.trim();
+
+  if(!name){ alert('Give it a name.'); return; }
+  if(!size || size <= 0){ alert('Size must be a positive number.'); return; }
+  if(!data){ alert('Paste a data string.'); return; }
+  if(data.length !== size * size){
+    if(!confirm(`This data string is ${data.length} characters but a ${size}×${size} grid needs ${size*size}. Save anyway?`)) return;
+  }
+
+  let entry;
+  if(editingId !== null){
+    entry = entries.find(e => e.id === editingId);
+    Object.assign(entry, { name, category, size, author, data });
+    if(entry._status !== 'new') entry._status = 'edited';
+  } else {
+    entry = normalizeEntry({ id: nextLocalId++, name, category, size, author, data }, 'new');
+    entries.push(entry);
+  }
+
+  closeFormModal();
+  refreshFilterOptions();
+  applyFiltersAndRender();
+  showGeneratedCode(entry, false);
+});
+
+/* ============================================================
+   CODE GENERATION (single entry + full library)
+   ============================================================ */
+const codeOverlay = document.getElementById('codeOverlay');
+const codeText = document.getElementById('codeText');
+const codeTitle = document.getElementById('codeTitle');
+const codeSubtitle = document.getElementById('codeSubtitle');
+const codeCopyBtn = document.getElementById('codeCopyBtn');
+
+function formatEntryObject(e, indent = '    '){
+  return `{
+${indent}id: ${JSON.stringify(e.id)},
+${indent}name: ${JSON.stringify(e.name)},
+${indent}size: ${e.size},
+${indent}category: ${JSON.stringify(e.category)},
+${indent}author: ${JSON.stringify(e.author || '')},
+${indent}data: ${JSON.stringify(e.data)}
+}`;
+}
+
+function showGeneratedCode(entry, isFull){
+  if(isFull){
+    codeTitle.textContent = 'FULL LIBRARY EXPORT';
+    codeSubtitle.textContent = 'This replaces the entire contents of your GitHub library file with the current state (adds, edits, and deletes all applied).';
+    const list = entries.filter(e => !e._deleted);
+    codeText.textContent = '[\n' + list.map(e => '  ' + formatEntryObject(e, '    ')).join(',\n') + '\n]';
+  } else {
+    codeTitle.textContent = 'NEW ENTRY GENERATED';
+    codeSubtitle.textContent = 'Paste this object into your GitHub library file\'s array (e.g. right after the opening "[").';
+    codeText.textContent = formatEntryObject(entry, '  ') + ',';
+  }
+  codeOverlay.classList.remove('hidden');
+}
+document.getElementById('exportBtn').addEventListener('click', () => showGeneratedCode(null, true));
+document.getElementById('codeCloseBtn').addEventListener('click', () => codeOverlay.classList.add('hidden'));
+document.getElementById('codeDoneBtn').addEventListener('click', () => codeOverlay.classList.add('hidden'));
+codeOverlay.addEventListener('click', (e) => { if(e.target === codeOverlay) codeOverlay.classList.add('hidden'); });
+codeCopyBtn.addEventListener('click', () => copyText(codeText.textContent, codeCopyBtn));
+
+/* ============================================================
+   SETTINGS PANEL
+   ============================================================ */
+const settingsPanel = document.getElementById('settingsPanel');
+document.getElementById('settingsBtn').addEventListener('click', () => {
+  settingsPanel.classList.toggle('hidden');
+});
+document.getElementById('settingsCloseBtn').addEventListener('click', () => settingsPanel.classList.add('hidden'));
+
+const cfgUrl = document.getElementById('cfgUrl');
+
+function loadConfigIntoForm(){
+  cfgUrl.value = config.url;
+}
+loadConfigIntoForm();
+
+document.getElementById('connectBtn').addEventListener('click', async () => {
+  config = { url: cfgUrl.value.trim() || config.url };
+  saveJSON(CONFIG_KEY, config);
+  settingsPanel.classList.add('hidden');
+  await fetchLibrary();
+});
+document.getElementById('resetSourceBtn').addEventListener('click', async () => {
+  if(!confirm('Reset the GitHub source settings back to the default library URL?')) return;
+  localStorage.removeItem(CONFIG_KEY);
+  config = Object.assign({}, DEFAULT_CONFIG);
+  loadConfigIntoForm();
+  await fetchLibrary();
+});
+document.getElementById('reloadBtn').addEventListener('click', fetchLibrary);
+
+/* ============================================================
+   INIT
+   ============================================================ */
+(async function init(){
+  if(config.url){
+    await fetchLibrary();
+  } else {
+    settingsPanel.classList.remove('hidden');
+  }
+})();
+</script>
+</body>
+</html>
