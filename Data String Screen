@@ -1,15 +1,24 @@
--- Look -- References to the Remotes
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Packages = ReplicatedStorage:WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("kumarion_knit-rojo@0.2.0"):WaitForChild("knit-rojo"):WaitForChild("Services")
+-- =============================================================================
+-- DYNAMIC NETFLIX-STYLE PIXEL ART ENGINE & AUTO-BUILDER
+-- =============================================================================
 
+local HttpService = game:GetService("HttpService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CoreGui = game:GetService("CoreGui")
+local Players = game:GetService("Players")
+
+-- References to the Remotes
+local Packages = ReplicatedStorage:WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("kumarion_knit-rojo@0.2.0"):WaitForChild("knit-rojo"):WaitForChild("Services")
 local InventoryRF = Packages:WaitForChild("InventoryService"):WaitForChild("RF"):WaitForChild("Inventory")
 local PlaceBuildRF = Packages:WaitForChild("PlacementService"):WaitForChild("RF"):WaitForChild("PlaceBuild")
 
 -- References to the local player
-local Player = game:GetService("Players").LocalPlayer
+local Player = Players.LocalPlayer
 local PlayerGui = Player:WaitForChild("PlayerGui")
 local Character = Player.Character or Player.CharacterAdded:Wait()
 local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart")
+
+local TargetGui = CoreGui or PlayerGui
 
 -- ==========================================================================
 -- ⚙️ CONFIGURATION DATA SETS
@@ -30,10 +39,8 @@ local selectedIndex = 3 -- Default selected option is 75x75
 local POSITION_CONFIG = {"Front", "Middle", "Back"}
 local selectedPosition = "Middle" -- Default selected position
 
--- ==========================================================================
--- 🎨 36-COLOR KEY DICTIONARY MAPPING
--- ==========================================================================
-local COLOR_MAP = {
+-- 🎨 ROBLOX PAINT COLOR MAPPING
+local COLOR_NAME_MAP = {
 	A = "White",            B = "Grey",             C = "Smoky Grey",
 	D = "Black",            E = "Red",              F = "Dark Red",
 	G = "Reddish Orange",   H = "Orange",           I = "Dark Orange",
@@ -48,6 +55,22 @@ local COLOR_MAP = {
 	h = "Light Brown",      i = "Brown",            j = "Dark Brown"
 }
 
+-- 📺 RGB COLORS FOR GUI PREVIEW CANVAS ONLY
+local COLOR_RGB_MAP = {
+	A = Color3.fromRGB(255, 255, 255), B = Color3.fromRGB(99, 95, 98),    C = Color3.fromRGB(70, 96, 117),
+	D = Color3.fromRGB(0, 0, 0),       E = Color3.fromRGB(196, 40, 28),   F = Color3.fromRGB(117, 0, 0),
+	G = Color3.fromRGB(217, 133, 108), H = Color3.fromRGB(218, 133, 65),  I = Color3.fromRGB(139, 84, 41),
+	J = Color3.fromRGB(226, 155, 64),  K = Color3.fromRGB(245, 205, 48),  L = Color3.fromRGB(145, 212, 84),
+	M = Color3.fromRGB(43, 255, 111),  N = Color3.fromRGB(35, 244, 46),   O = Color3.fromRGB(203, 255, 154),
+	P = Color3.fromRGB(75, 151, 75),   Q = Color3.fromRGB(0, 97, 0),      R = Color3.fromRGB(51, 104, 6),
+	S = Color3.fromRGB(0, 143, 156),   T = Color3.fromRGB(61, 255, 208),  U = Color3.fromRGB(61, 171, 238),
+	V = Color3.fromRGB(61, 171, 238),  W = Color3.fromRGB(174, 255, 254), X = Color3.fromRGB(0, 32, 96),
+	Y = Color3.fromRGB(67, 84, 147),   Z = Color3.fromRGB(107, 50, 124),  a = Color3.fromRGB(61, 21, 133),
+	b = Color3.fromRGB(255, 102, 204), c = Color3.fromRGB(254, 119, 254), d = Color3.fromRGB(250, 0, 173),
+	e = Color3.fromRGB(235, 1, 96),    f = Color3.fromRGB(229, 173, 200), g = Color3.fromRGB(249, 190, 156),
+	h = Color3.fromRGB(204, 153, 0),   i = Color3.fromRGB(153, 102, 0),   j = Color3.fromRGB(102, 51, 0)
+}
+
 local paletteColors = {
 	"White", "Grey", "Smoky Grey", "Black", "Red", "Dark Red",
 	"Reddish Orange", "Orange", "Dark Orange", "Yellowish Orange", "Yellow", "Yellowish Green",
@@ -58,20 +81,20 @@ local paletteColors = {
 }
 
 -- ==========================================================================
--- 🛠️ USER INTERFACE SYSTEM
+-- 🛠️ MAIN WINDOW INTERFACE
 -- ==========================================================================
-if PlayerGui:FindFirstChild("MatrixPainterUI") then
-	PlayerGui.MatrixPainterUI:Destroy()
+if TargetGui:FindFirstChild("MatrixPainterUI") then
+	TargetGui.MatrixPainterUI:Destroy()
 end
 
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "MatrixPainterUI"
 ScreenGui.ResetOnSpawn = false
-ScreenGui.Parent = PlayerGui
+ScreenGui.Parent = TargetGui
 
 local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 340, 0, 300)
-MainFrame.Position = UDim2.new(0.5, -170, 0.25, 0)
+MainFrame.Size = UDim2.new(0, 480, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -240, 0.25, 0)
 MainFrame.BackgroundColor3 = Color3.fromRGB(25, 26, 31)
 MainFrame.BorderSizePixel = 1
 MainFrame.BorderColor3 = Color3.fromRGB(42, 43, 50)
@@ -83,74 +106,124 @@ local UICorner = Instance.new("UICorner")
 UICorner.CornerRadius = UDim.new(0, 6)
 UICorner.Parent = MainFrame
 
+-- HEADER BAR
+local Header = Instance.new("Frame")
+Header.Size = UDim2.new(1, 0, 0, 35)
+Header.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
+Header.BorderSizePixel = 0
+Header.Parent = MainFrame
+
 local Title = Instance.new("TextLabel")
-Title.Size = UDim2.new(1, 0, 0, 35)
-Title.Text = "MULTI-CANVAS POSITION PAINTER"
+Title.Size = UDim2.new(0, 240, 1, 0)
+Title.Position = UDim2.new(0, 10, 0, 0)
+Title.BackgroundTransparency = 1
+Title.Text = "MULTI-CANVAS PAINTER"
 Title.Font = Enum.Font.SourceSansBold
-Title.TextSize = 14
+Title.TextSize = 13
 Title.TextColor3 = Color3.fromRGB(61, 220, 151)
-Title.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
-Title.BorderSizePixel = 0
-Title.Parent = MainFrame
+Title.TextXAlignment = Enum.TextXAlignment.Left
+Title.Parent = Header
+
+-- Switch Window Navigation Button
+local NavButton = Instance.new("TextButton")
+NavButton.Size = UDim2.new(0, 150, 0, 24)
+NavButton.Position = UDim2.new(1, -185, 0.5, -12)
+NavButton.BackgroundColor3 = Color3.fromRGB(35, 36, 43)
+NavButton.BorderSizePixel = 0
+NavButton.Text = "Browse Library ➔"
+NavButton.Font = Enum.Font.SourceSansBold
+NavButton.TextSize = 11
+NavButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+NavButton.Parent = Header
+
+local NavCorner = Instance.new("UICorner")
+NavCorner.CornerRadius = UDim.new(0, 4)
+NavCorner.Parent = NavButton
+
+-- Close Button
+local CloseButton = Instance.new("TextButton")
+CloseButton.Size = UDim2.new(0, 22, 0, 22)
+CloseButton.Position = UDim2.new(1, -28, 0.5, -11)
+CloseButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+CloseButton.BorderSizePixel = 0
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.TextSize = 11
+CloseButton.Font = Enum.Font.SourceSansBold
+CloseButton.Parent = Header
+CloseButton.MouseButton1Click:Connect(function() ScreenGui:Destroy() end)
+
+local CloseCorner = Instance.new("UICorner")
+CloseCorner.CornerRadius = UDim.new(0, 4)
+CloseCorner.Parent = CloseButton
+
+-- ==========================================================================
+-- 🛠️ SCREEN 1: MANUAL INPUT VIEW
+-- ==========================================================================
+local ManualFrame = Instance.new("Frame")
+ManualFrame.Size = UDim2.new(1, 0, 1, -35)
+ManualFrame.Position = UDim2.new(0, 0, 0, 35)
+ManualFrame.BackgroundTransparency = 1
+ManualFrame.Parent = MainFrame
 
 local SelectorLabel = Instance.new("TextLabel")
-SelectorLabel.Size = UDim2.new(0, 130, 0, 30)
-SelectorLabel.Position = UDim2.new(0, 15, 0, 45)
+SelectorLabel.Size = UDim2.new(0, 150, 0, 30)
+SelectorLabel.Position = UDim2.new(0, 15, 0, 15)
 SelectorLabel.Text = "Selected Canvas:"
 SelectorLabel.Font = Enum.Font.SourceSansSemibold
 SelectorLabel.TextSize = 13
 SelectorLabel.TextColor3 = Color3.fromRGB(160, 160, 165)
 SelectorLabel.TextXAlignment = Enum.TextXAlignment.Left
 SelectorLabel.BackgroundTransparency = 1
-SelectorLabel.Parent = MainFrame
+SelectorLabel.Parent = ManualFrame
 
 local DropdownBtn = Instance.new("TextButton")
-DropdownBtn.Size = UDim2.new(0, 170, 0, 30)
-DropdownBtn.Position = UDim2.new(0, 155, 0, 45)
+DropdownBtn.Size = UDim2.new(1, -195, 0, 30)
+DropdownBtn.Position = UDim2.new(0, 180, 0, 15)
 DropdownBtn.Text = SIZES_CONFIG[selectedIndex].name .. " ▼"
 DropdownBtn.Font = Enum.Font.SourceSansBold
 DropdownBtn.TextSize = 13
 DropdownBtn.TextColor3 = Color3.fromRGB(235, 235, 240)
 DropdownBtn.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
 DropdownBtn.BorderColor3 = Color3.fromRGB(42, 43, 50)
-DropdownBtn.Parent = MainFrame
+DropdownBtn.Parent = ManualFrame
 
 local PosSelectorLabel = Instance.new("TextLabel")
-PosSelectorLabel.Size = UDim2.new(0, 130, 0, 30)
-PosSelectorLabel.Position = UDim2.new(0, 15, 0, 80)
+PosSelectorLabel.Size = UDim2.new(0, 150, 0, 30)
+PosSelectorLabel.Position = UDim2.new(0, 15, 0, 50)
 PosSelectorLabel.Text = "Image Position:"
 PosSelectorLabel.Font = Enum.Font.SourceSansSemibold
 PosSelectorLabel.TextSize = 13
 PosSelectorLabel.TextColor3 = Color3.fromRGB(160, 160, 165)
 PosSelectorLabel.TextXAlignment = Enum.TextXAlignment.Left
 PosSelectorLabel.BackgroundTransparency = 1
-PosSelectorLabel.Parent = MainFrame
+PosSelectorLabel.Parent = ManualFrame
 
 local PosDropdownBtn = Instance.new("TextButton")
-PosDropdownBtn.Size = UDim2.new(0, 170, 0, 30)
-PosDropdownBtn.Position = UDim2.new(0, 155, 0, 80)
+PosDropdownBtn.Size = UDim2.new(1, -195, 0, 30)
+PosDropdownBtn.Position = UDim2.new(0, 180, 0, 50)
 PosDropdownBtn.Text = selectedPosition .. " ▼"
 PosDropdownBtn.Font = Enum.Font.SourceSansBold
 PosDropdownBtn.TextSize = 13
 PosDropdownBtn.TextColor3 = Color3.fromRGB(235, 235, 240)
 PosDropdownBtn.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
 PosDropdownBtn.BorderColor3 = Color3.fromRGB(42, 43, 50)
-PosDropdownBtn.Parent = MainFrame
+PosDropdownBtn.Parent = ManualFrame
 
 local ReqLabel = Instance.new("TextLabel")
-ReqLabel.Size = UDim2.new(0, 130, 0, 20)
-ReqLabel.Position = UDim2.new(0, 15, 0, 115)
+ReqLabel.Size = UDim2.new(0, 150, 0, 20)
+ReqLabel.Position = UDim2.new(0, 15, 0, 85)
 ReqLabel.Text = "Data Length Required:"
 ReqLabel.Font = Enum.Font.SourceSansSemibold
 ReqLabel.TextSize = 13
 ReqLabel.TextColor3 = Color3.fromRGB(160, 160, 165)
 ReqLabel.TextXAlignment = Enum.TextXAlignment.Left
 ReqLabel.BackgroundTransparency = 1
-ReqLabel.Parent = MainFrame
+ReqLabel.Parent = ManualFrame
 
 local ReqValue = Instance.new("TextLabel")
 ReqValue.Size = UDim2.new(0, 170, 0, 20)
-ReqValue.Position = UDim2.new(0, 155, 0, 115)
+ReqValue.Position = UDim2.new(0, 180, 0, 85)
 local defaultSize = SIZES_CONFIG[selectedIndex].canvas
 ReqValue.Text = tostring(defaultSize * defaultSize) .. " Characters"
 ReqValue.Font = Enum.Font.Code
@@ -158,33 +231,33 @@ ReqValue.TextSize = 13
 ReqValue.TextColor3 = Color3.fromRGB(61, 220, 151)
 ReqValue.TextXAlignment = Enum.TextXAlignment.Left
 ReqValue.BackgroundTransparency = 1
-ReqValue.Parent = MainFrame
+ReqValue.Parent = ManualFrame
 
 local StatusTitle = Instance.new("TextLabel")
-StatusTitle.Size = UDim2.new(0, 130, 0, 20)
-StatusTitle.Position = UDim2.new(0, 15, 0, 140)
+StatusTitle.Size = UDim2.new(0, 150, 0, 20)
+StatusTitle.Position = UDim2.new(0, 15, 0, 105)
 StatusTitle.Text = "Status:"
 StatusTitle.Font = Enum.Font.SourceSansSemibold
 StatusTitle.TextSize = 13
 StatusTitle.TextColor3 = Color3.fromRGB(160, 160, 165)
 StatusTitle.TextXAlignment = Enum.TextXAlignment.Left
 StatusTitle.BackgroundTransparency = 1
-StatusTitle.Parent = MainFrame
+StatusTitle.Parent = ManualFrame
 
 local StatusValue = Instance.new("TextLabel")
 StatusValue.Size = UDim2.new(0, 170, 0, 20)
-StatusValue.Position = UDim2.new(0, 155, 0, 140)
+StatusValue.Position = UDim2.new(0, 180, 0, 105)
 StatusValue.Text = "Ready"
 StatusValue.Font = Enum.Font.SourceSansBold
 StatusValue.TextSize = 13
 StatusValue.TextColor3 = Color3.fromRGB(235, 235, 240)
 StatusValue.TextXAlignment = Enum.TextXAlignment.Left
 StatusValue.BackgroundTransparency = 1
-StatusValue.Parent = MainFrame
+StatusValue.Parent = ManualFrame
 
 local TextBox = Instance.new("TextBox")
-TextBox.Size = UDim2.new(0, 310, 0, 60)
-TextBox.Position = UDim2.new(0.5, -155, 0, 170)
+TextBox.Size = UDim2.new(1, -30, 0, 60)
+TextBox.Position = UDim2.new(0.5, -225, 0, 135)
 TextBox.PlaceholderText = "Paste your data string here..."
 TextBox.Text = ""
 TextBox.ClearTextOnFocus = false
@@ -194,33 +267,34 @@ TextBox.TextColor3 = Color3.fromRGB(234, 231, 224)
 TextBox.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
 TextBox.BorderColor3 = Color3.fromRGB(42, 43, 50)
 TextBox.TextWrapped = true
-TextBox.Parent = MainFrame
+TextBox.Parent = ManualFrame
 
 local StartButton = Instance.new("TextButton")
-StartButton.Size = UDim2.new(0, 310, 0, 45)
-StartButton.Position = UDim2.new(0.5, -155, 0, 240)
+StartButton.Size = UDim2.new(1, -30, 0, 45)
+StartButton.Position = UDim2.new(0.5, -225, 0, 205)
 StartButton.Text = "START SECTOR PAINT"
 StartButton.Font = Enum.Font.SourceSansBold
 StartButton.TextSize = 14
 StartButton.TextColor3 = Color3.fromRGB(11, 20, 16)
 StartButton.BackgroundColor3 = Color3.fromRGB(61, 220, 151)
 StartButton.BorderSizePixel = 0
-StartButton.Parent = MainFrame
+StartButton.Parent = ManualFrame
 
 local ButtonCorner = Instance.new("UICorner")
 ButtonCorner.CornerRadius = UDim.new(0, 4)
 ButtonCorner.Parent = StartButton
 
+-- Dropdowns
 local ScrollFrame = Instance.new("ScrollingFrame")
-ScrollFrame.Size = UDim2.new(0, 170, 0, 150)
-ScrollFrame.Position = UDim2.new(0, 155, 0, 76)
+ScrollFrame.Size = UDim2.new(0, 285, 0, 150)
+ScrollFrame.Position = UDim2.new(0, 180, 0, 46)
 ScrollFrame.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
 ScrollFrame.BorderColor3 = Color3.fromRGB(42, 43, 50)
 ScrollFrame.ZIndex = 5
 ScrollFrame.Visible = false
 ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, #SIZES_CONFIG * 26)
 ScrollFrame.ScrollBarThickness = 4
-ScrollFrame.Parent = MainFrame
+ScrollFrame.Parent = ManualFrame
 
 for idx, item in ipairs(SIZES_CONFIG) do
 	local ItemBtn = Instance.new("TextButton")
@@ -252,15 +326,15 @@ DropdownBtn.MouseButton1Click:Connect(function()
 end)
 
 local PosScrollFrame = Instance.new("ScrollingFrame")
-PosScrollFrame.Size = UDim2.new(0, 170, 0, 80)
-PosScrollFrame.Position = UDim2.new(0, 155, 0, 111)
+PosScrollFrame.Size = UDim2.new(0, 285, 0, 80)
+PosScrollFrame.Position = UDim2.new(0, 180, 0, 81)
 PosScrollFrame.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
 PosScrollFrame.BorderColor3 = Color3.fromRGB(42, 43, 50)
 PosScrollFrame.ZIndex = 5
 PosScrollFrame.Visible = false
 PosScrollFrame.CanvasSize = UDim2.new(0, 0, 0, #POSITION_CONFIG * 26)
 PosScrollFrame.ScrollBarThickness = 4
-PosScrollFrame.Parent = MainFrame
+PosScrollFrame.Parent = ManualFrame
 
 for idx, posName in ipairs(POSITION_CONFIG) do
 	local ItemBtn = Instance.new("TextButton")
@@ -291,6 +365,155 @@ PosDropdownBtn.MouseButton1Click:Connect(function()
 end)
 
 -- ==========================================================================
+-- 📺 SCREEN 2: NETFLIX THUMBNAIL GALLERY VIEW
+-- ==========================================================================
+local LibraryFrame = Instance.new("Frame")
+LibraryFrame.Size = UDim2.new(1, 0, 1, -35)
+LibraryFrame.Position = UDim2.new(0, 0, 0, 35)
+LibraryFrame.BackgroundTransparency = 1
+LibraryFrame.Visible = false
+LibraryFrame.Parent = MainFrame
+
+-- Left Side Horizontal/Vertical Visual Cover Scroll Flow
+local StreamScroll = Instance.new("ScrollingFrame")
+StreamScroll.Size = UDim2.new(0, 220, 1, -20)
+StreamScroll.Position = UDim2.new(0, 15, 0, 10)
+StreamScroll.BackgroundColor3 = Color3.fromRGB(12, 12, 15)
+StreamScroll.BorderSizePixel = 0
+StreamScroll.ScrollBarThickness = 4
+StreamScroll.Parent = LibraryFrame
+
+local StreamLayout = Instance.new("UIGridLayout")
+StreamLayout.CellSize = UDim2.new(0, 98, 0, 115)
+StreamLayout.CellPadding = UDim2.new(0, 8, 0, 8)
+StreamLayout.SortOrder = Enum.SortOrder.LayoutOrder
+StreamLayout.Parent = StreamScroll
+StreamLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+	StreamScroll.CanvasSize = UDim2.new(0, 0, 0, StreamLayout.AbsoluteContentSize.Y + 15)
+end)
+
+-- Right Side Real-time Art Preview Window Canvas
+local LibraryPreview = Instance.new("Frame")
+LibraryPreview.Size = UDim2.new(0, 215, 0, 175)
+LibraryPreview.Position = UDim2.new(0, 250, 0, 10)
+LibraryPreview.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+LibraryPreview.BorderSizePixel = 0
+LibraryPreview.ClipsDescendants = true
+LibraryPreview.Parent = LibraryFrame
+
+local PreviewGridLayout = Instance.new("UIGridLayout")
+PreviewGridLayout.CellPadding = UDim2.new(0, 0, 0, 0)
+PreviewGridLayout.StartCorner = Enum.StartCorner.BottomLeft
+PreviewGridLayout.FillDirection = Enum.FillDirection.Horizontal
+PreviewGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+PreviewGridLayout.Parent = LibraryPreview
+
+-- Bottom Right Execute Build Trigger
+local ExecuteBuildBtn = Instance.new("TextButton")
+ExecuteBuildBtn.Size = UDim2.new(0, 215, 0, 45)
+ExecuteBuildBtn.Position = UDim2.new(0, 250, 0, 195)
+ExecuteBuildBtn.BackgroundColor3 = Color3.fromRGB(61, 220, 151)
+ExecuteBuildBtn.Text = "EXECUTE BUILD"
+ExecuteBuildBtn.TextColor3 = Color3.fromRGB(11, 20, 16)
+ExecuteBuildBtn.TextSize = 13
+ExecuteBuildBtn.Font = Enum.Font.SourceSansBold
+ExecuteBuildBtn.Parent = LibraryFrame
+
+local ExecuteCorner = Instance.new("UICorner")
+ExecuteCorner.CornerRadius = UDim.new(0, 4)
+ExecuteCorner.Parent = ExecuteBuildBtn
+
+-- ==========================================================================
+-- 💡 RUNTIME CONTROLLERS & SWITCHERS
+-- ==========================================================================
+local isLibraryLoaded = false
+local libraryDataString = ""
+local libraryCanvasSize = 75
+local previewCache = {}
+
+-- Screens navigation switcher
+NavButton.MouseButton1Click:Connect(function()
+	if ManualFrame.Visible then
+		ManualFrame.Visible = false
+		LibraryFrame.Visible = true
+		NavButton.Text = "⬅ Manual Input"
+		Title.Text = "BROWSE CREATIONS"
+	else
+		ManualFrame.Visible = true
+		LibraryFrame.Visible = false
+		NavButton.Text = "Browse Library ➔"
+		Title.Text = "MULTI-CANVAS PAINTER"
+	end
+end)
+
+-- High-Res Preview Visual Drawing
+local function RenderSelectedArt()
+	local expectedTotal = libraryCanvasSize * libraryCanvasSize
+	PreviewGridLayout.CellSize = UDim2.new(1 / libraryCanvasSize, 0, 1 / libraryCanvasSize, 0)
+	
+	if #previewCache < expectedTotal then
+		local currentCount = #previewCache
+		local needed = expectedTotal - currentCount
+		for i = 1, needed do
+			local nextIdx = currentCount + i
+			local Pixel = Instance.new("Frame")
+			Pixel.BorderSizePixel = 0
+			Pixel.LayoutOrder = nextIdx
+			Pixel.Parent = LibraryPreview
+			previewCache[nextIdx] = Pixel
+			if i % 3000 == 0 then task.wait() end
+		end
+	end
+	
+	local dataLen = string.len(libraryDataString)
+	for i = 1, #previewCache do
+		local pixelFrame = previewCache[i]
+		if i <= expectedTotal then
+			pixelFrame.Visible = true
+			if i <= dataLen then
+				local char = string.sub(libraryDataString, i, i)
+				pixelFrame.BackgroundColor3 = COLOR_RGB_MAP[char] or Color3.fromRGB(15, 15, 15)
+			else
+				pixelFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+			end
+		else
+			pixelFrame.Visible = false
+		end
+	end
+end
+
+-- Fast card dynamic down-sampler
+local function PopulateMediaThumbnailCard(parentCard, dataString, targetSize)
+	local ThumbCanvas = Instance.new("Frame")
+	ThumbCanvas.Size = UDim2.new(1, 0, 1, -22)
+	ThumbCanvas.BackgroundTransparency = 1
+	ThumbCanvas.ClipsDescendants = true
+	ThumbCanvas.Parent = parentCard
+
+	local Grid = Instance.new("UIGridLayout")
+	Grid.CellPadding = UDim2.new(0, 0, 0, 0)
+	Grid.StartCorner = Enum.StartCorner.BottomLeft
+	Grid.CellSize = UDim2.new(1 / 25, 0, 1 / 25, 0)
+	Grid.Parent = ThumbCanvas
+
+	for y = 1, 25 do
+		local sourceY = math.clamp(math.round((y / 25) * targetSize), 1, targetSize)
+		for x = 1, 25 do
+			local sourceX = math.clamp(math.round((x / 25) * targetSize), 1, targetSize)
+			local dataIndex = (sourceY - 1) * targetSize + sourceX
+			
+			local char = string.sub(dataString, dataIndex, dataIndex)
+			local color = COLOR_RGB_MAP[char] or Color3.fromRGB(20, 20, 20)
+
+			local p = Instance.new("Frame")
+			p.BorderSizePixel = 0
+			p.BackgroundColor3 = color
+			p.Parent = ThumbCanvas
+		end
+	end
+end
+
+-- ==========================================================================
 -- 🚀 RUNTIME MULTI-CANVAS VERTICAL ENGINE
 -- ==========================================================================
 local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
@@ -317,12 +540,10 @@ local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
 		CENTER_Z = 49.5
 		placementCFrame = CFrame.new(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
 	elseif posSetting == "Front" then
-		-- Flush near MAX_X boundary, facing the center (rotated 180°)
 		CENTER_X = MAX_X - singlePadding
 		CENTER_Z = MAP_CENTER_Z
 		placementCFrame = CFrame.Angles(0, math.rad(180), 0)
 	elseif posSetting == "Back" then
-		-- Flush near MIN_X boundary, facing the center (rotated 0°)
 		CENTER_X = MIN_X + singlePadding
 		CENTER_Z = MAP_CENTER_Z
 		placementCFrame = CFrame.Angles(0, 0, 0)
@@ -340,7 +561,7 @@ local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
 		for col = 1, GRID_SIZE do
 			local stringIndex = ((row - 1) * GRID_SIZE) + col
 			local characterKey = string.sub(dataString, stringIndex, stringIndex)
-			imageMatrix[row][col] = COLOR_MAP[characterKey] or "White"
+			imageMatrix[row][col] = COLOR_NAME_MAP[characterKey] or "White"
 		end
 	end
 	
@@ -359,7 +580,7 @@ local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
 	end
 	
 	local spawnCounter = 0
-	local THROTTLE_LIMIT = 14 -- Optimized up from 6 for faster placements per frame
+	local THROTTLE_LIMIT = 14 -- Optimized placements per frame
 	
 	-- 3. Sequentially step coordinates sector by sector (1 to total sectors)
 	for index, sector in ipairs(sectors) do
@@ -375,13 +596,12 @@ local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
 		local centerColOffset = isFront and (centerCol - 1) or (GRID_SIZE - centerCol)
 		local sectorCenterZ = START_Z + (centerColOffset * STEP)
 		
-		-- [ORIENTATION & TELEPORT FIX] 
 		-- Subtracted 4 instead of adding 4 if it's the "Front" layout to keep you on the grass side
 		local xTeleportOffset = isFront and -4 or 4
 		local lookAngle = isFront and math.rad(-90) or math.rad(90)
 		
 		HumanoidRootPart.CFrame = CFrame.new(START_X + xTeleportOffset, sectorCenterY, sectorCenterZ) * CFrame.Angles(0, lookAngle, 0)
-		task.wait(0.12) -- Optimized down from 0.25 to speed up teleports safely
+		task.wait(0.12)
 		
 		-- Loop over sorted layout palette inside workspace cluster
 		for _, targetColor in ipairs(paletteColors) do
@@ -397,7 +617,7 @@ local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
 						
 						if not colorHasBeenEquipped then
 							InventoryRF:InvokeServer("Equip", "SelectedColor", targetColor)
-							task.wait(0.02) -- Optimized down from 0.05 to speed up color swapping
+							task.wait(0.02)
 							colorHasBeenEquipped = true
 						end
 						
@@ -433,8 +653,10 @@ local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
 end
 
 -- ==========================================================================
--- 🛠️ SYSTEM TRIGGER VALIDATION INTERFACE
+-- 🛠️ SYSTEM TRIGGER VALIDATION INTERFACES
 -- ==========================================================================
+
+-- MANUAL RUN TRIGGER
 StartButton.MouseButton1Click:Connect(function()
 	local currentConfig = SIZES_CONFIG[selectedIndex]
 	local inputString = TextBox.Text:gsub("%s+", "")
@@ -457,3 +679,85 @@ StartButton.MouseButton1Click:Connect(function()
 	MainFrame.Visible = false
 	runWorkspaceMatrixEngine(inputString, currentConfig, selectedPosition)
 end)
+
+-- LIBRARY EXECUTE TRIGGER
+ExecuteBuildBtn.MouseButton1Click:Connect(function()
+	if libraryDataString == "" then
+		ExecuteBuildBtn.Text = "SELECT AN ARTWORK THUMBNAIL FIRST"
+		task.wait(1.5)
+		ExecuteBuildBtn.Text = "EXECUTE BUILD"
+		return
+	end
+
+	-- Find config layout matching the library item size
+	local currentConfig = nil
+	for _, config in ipairs(SIZES_CONFIG) do
+		if config.canvas == libraryCanvasSize then
+			currentConfig = config
+			break
+		end
+	end
+
+	-- Fallback if exact matching config isn't found
+	if not currentConfig then
+		currentConfig = {name = libraryCanvasSize.."x"..libraryCanvasSize, canvas = libraryCanvasSize, sector = 27}
+	end
+
+	MainFrame.Visible = false
+	runWorkspaceMatrixEngine(libraryDataString, currentConfig, selectedPosition)
+end)
+
+-- ==========================================================================
+-- 🌐 GITHUB LOADER PIPELINE
+-- ==========================================================================
+local function DownloadGitHubLibrary()
+	local url = "https://raw.githubusercontent.com/user214kh-tech/Blocks-Build/main/Data%20String%20Library"
+	local success, response = pcall(function() return game:HttpGet(url) end)
+	
+	if not success then return end
+	
+	local sanitizedResponse = response:gsub("([%w_]+)%s*:", '"%1":')
+	local decodeSuccess, dataArray = pcall(function() return HttpService:JSONDecode(sanitizedResponse) end)
+	
+	if not decodeSuccess then return end
+	
+	for _, item in ipairs(dataArray) do
+		if item.name and item.data then
+			-- Create visual Netflix cover tile card
+			local CardButton = Instance.new("TextButton")
+			CardButton.Text = ""
+			CardButton.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+			CardButton.BorderSizePixel = 0
+			CardButton.Parent = StreamScroll
+
+			local CardCorner = Instance.new("UICorner")
+			CardCorner.CornerRadius = UDim.new(0, 4)
+			CardCorner.Parent = CardButton
+
+			-- Info label card overlay
+			local TextLabel = Instance.new("TextLabel")
+			TextLabel.Size = UDim2.new(1, 0, 0, 22)
+			TextLabel.Position = UDim2.new(0, 0, 1, -22)
+			TextLabel.BackgroundColor3 = Color3.fromRGB(38, 38, 43)
+			TextLabel.Text = "  " .. tostring(item.name)
+			TextLabel.TextColor3 = Color3.fromRGB(230, 230, 230)
+			TextLabel.TextSize = 10
+			TextLabel.Font = Enum.Font.SourceSansBold
+			TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+			TextLabel.Parent = CardButton
+			
+			-- Render visual down-sampled thumbnail
+			task.spawn(PopulateMediaThumbnailCard, CardButton, item.data, tonumber(item.size) or 75)
+			
+			-- Handle card selected
+			CardButton.MouseButton1Click:Connect(function()
+				libraryCanvasSize = tonumber(item.size) or 75
+				libraryDataString = item.data
+				task.spawn(RenderSelectedArt)
+			end)
+		end
+	end
+end
+
+task.spawn(DownloadGitHubLibrary)
+
