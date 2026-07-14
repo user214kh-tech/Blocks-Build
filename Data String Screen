@@ -408,6 +408,24 @@ PreviewGridLayout.FillDirection = Enum.FillDirection.Horizontal
 PreviewGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
 PreviewGridLayout.Parent = LibraryPreview
 
+-- 🏷️ Canvas Size Overlay Indicator (Bottom Right Corner of the Library view, floating outside the preview grid)
+local VisualSizeLabel = Instance.new("TextLabel")
+VisualSizeLabel.Size = UDim2.new(0, 95, 0, 18)
+VisualSizeLabel.Position = UDim2.new(0, 367, 0, 163) -- Safely positioned relative to LibraryFrame over the preview
+VisualSizeLabel.BackgroundColor3 = Color3.fromRGB(16, 17, 21)
+VisualSizeLabel.BackgroundTransparency = 0.25
+VisualSizeLabel.Text = "[ Size: -- ]"
+VisualSizeLabel.Font = Enum.Font.Code
+VisualSizeLabel.TextSize = 10
+VisualSizeLabel.TextColor3 = Color3.fromRGB(61, 220, 151)
+VisualSizeLabel.ZIndex = 12
+VisualSizeLabel.Visible = false
+VisualSizeLabel.Parent = LibraryFrame
+
+local VisualSizeCorner = Instance.new("UICorner")
+VisualSizeCorner.CornerRadius = UDim.new(0, 4)
+VisualSizeCorner.Parent = VisualSizeLabel
+
 -- Bottom Right Execute Build Trigger
 local ExecuteBuildBtn = Instance.new("TextButton")
 ExecuteBuildBtn.Size = UDim2.new(0, 215, 0, 45)
@@ -422,6 +440,72 @@ ExecuteBuildBtn.Parent = LibraryFrame
 local ExecuteCorner = Instance.new("UICorner")
 ExecuteCorner.CornerRadius = UDim.new(0, 4)
 ExecuteCorner.Parent = ExecuteBuildBtn
+
+-- ==========================================================================
+-- 🛠️ PROMPT LAYER POPUP MODAL
+-- ==========================================================================
+local PromptModalOverlay = Instance.new("Frame")
+PromptModalOverlay.Size = UDim2.new(1, 0, 1, 0)
+PromptModalOverlay.BackgroundColor3 = Color3.fromRGB(14, 15, 18)
+PromptModalOverlay.BackgroundTransparency = 0.35
+PromptModalOverlay.ZIndex = 40
+PromptModalOverlay.Visible = false
+PromptModalOverlay.Parent = MainFrame
+
+local PromptModalCorner = Instance.new("UICorner")
+PromptModalCorner.CornerRadius = UDim.new(0, 6)
+PromptModalCorner.Parent = PromptModalOverlay
+
+local PromptBox = Instance.new("Frame")
+PromptBox.Size = UDim2.new(0, 340, 0, 120)
+PromptBox.Position = UDim2.new(0.5, -170, 0.5, -60)
+PromptBox.BackgroundColor3 = Color3.fromRGB(22, 23, 28)
+PromptBox.ZIndex = 41
+PromptBox.Parent = PromptModalOverlay
+
+local PromptBoxCorner = Instance.new("UICorner")
+PromptBoxCorner.CornerRadius = UDim.new(0, 5)
+PromptBoxCorner.Parent = PromptBox
+
+local PromptTitle = Instance.new("TextLabel")
+PromptTitle.Size = UDim2.new(1, 0, 0, 35)
+PromptTitle.Text = "CHOOSE DEPLOYMENT POSITION"
+PromptTitle.Font = Enum.Font.SourceSansBold
+PromptTitle.TextSize = 12
+PromptTitle.TextColor3 = Color3.fromRGB(240, 240, 245)
+PromptTitle.BackgroundTransparency = 1
+PromptTitle.ZIndex = 42
+PromptTitle.Parent = PromptBox
+
+local PromptButtonsFrame = Instance.new("Frame")
+PromptButtonsFrame.Size = UDim2.new(1, -30, 0, 32)
+PromptButtonsFrame.Position = UDim2.new(0, 15, 0, 42)
+PromptButtonsFrame.BackgroundTransparency = 1
+PromptButtonsFrame.ZIndex = 42
+PromptButtonsFrame.Parent = PromptBox
+
+local PromptLayout = Instance.new("UIListLayout")
+PromptLayout.FillDirection = Enum.FillDirection.Horizontal
+PromptLayout.SortOrder = Enum.SortOrder.LayoutOrder
+PromptLayout.Padding = UDim.new(0, 8)
+PromptLayout.Parent = PromptButtonsFrame
+
+local PromptCancelBtn = Instance.new("TextButton")
+PromptCancelBtn.Size = UDim2.new(1, -30, 0, 24)
+PromptCancelBtn.Position = UDim2.new(0, 15, 1, -32)
+PromptCancelBtn.BackgroundColor3 = Color3.fromRGB(35, 36, 42)
+PromptCancelBtn.Text = "Cancel"
+PromptCancelBtn.Font = Enum.Font.SourceSans
+PromptCancelBtn.TextSize = 12
+PromptCancelBtn.TextColor3 = Color3.fromRGB(160, 160, 165)
+PromptCancelBtn.BorderSizePixel = 0
+PromptCancelBtn.ZIndex = 42
+PromptCancelBtn.Parent = PromptBox
+
+local PromptCancelCorner = Instance.new("UICorner")
+PromptCancelCorner.CornerRadius = UDim.new(0, 4)
+PromptCancelCorner.Parent = PromptCancelBtn
+PromptCancelBtn.MouseButton1Click:Connect(function() PromptModalOverlay.Visible = false end)
 
 -- ==========================================================================
 -- 💡 RUNTIME CONTROLLERS & SWITCHERS
@@ -680,6 +764,42 @@ StartButton.MouseButton1Click:Connect(function()
 	runWorkspaceMatrixEngine(inputString, currentConfig, selectedPosition)
 end)
 
+-- Create Position Buttons inside the pop-up Prompt Modal
+for idx, targetLayer in ipairs({"Front", "Middle", "Back"}) do
+	local LayerOptionBtn = Instance.new("TextButton")
+	LayerOptionBtn.Size = UDim2.new(0, 98, 1, 0)
+	LayerOptionBtn.BackgroundColor3 = Color3.fromRGB(61, 220, 151)
+	LayerOptionBtn.Text = targetLayer:upper()
+	LayerOptionBtn.Font = Enum.Font.SourceSansBold
+	LayerOptionBtn.TextSize = 12
+	LayerOptionBtn.TextColor3 = Color3.fromRGB(11, 20, 16)
+	LayerOptionBtn.BorderSizePixel = 0
+	LayerOptionBtn.ZIndex = 43
+	LayerOptionBtn.Parent = PromptButtonsFrame
+	
+	local OptCorner = Instance.new("UICorner")
+	OptCorner.CornerRadius = UDim.new(0, 4)
+	OptCorner.Parent = LayerOptionBtn
+	
+	LayerOptionBtn.MouseButton1Click:Connect(function()
+		PromptModalOverlay.Visible = false
+		MainFrame.Visible = false
+		
+		local currentConfig = nil
+		for _, config in ipairs(SIZES_CONFIG) do
+			if config.canvas == libraryCanvasSize then
+				currentConfig = config
+				break
+			end
+		end
+		if not currentConfig then
+			currentConfig = {name = libraryCanvasSize.."x"..libraryCanvasSize, canvas = libraryCanvasSize, sector = 27}
+		end
+		
+		runWorkspaceMatrixEngine(libraryDataString, currentConfig, targetLayer)
+	end)
+end
+
 -- LIBRARY EXECUTE TRIGGER
 ExecuteBuildBtn.MouseButton1Click:Connect(function()
 	if libraryDataString == "" then
@@ -689,22 +809,8 @@ ExecuteBuildBtn.MouseButton1Click:Connect(function()
 		return
 	end
 
-	-- Find config layout matching the library item size
-	local currentConfig = nil
-	for _, config in ipairs(SIZES_CONFIG) do
-		if config.canvas == libraryCanvasSize then
-			currentConfig = config
-			break
-		end
-	end
-
-	-- Fallback if exact matching config isn't found
-	if not currentConfig then
-		currentConfig = {name = libraryCanvasSize.."x"..libraryCanvasSize, canvas = libraryCanvasSize, sector = 27}
-	end
-
-	MainFrame.Visible = false
-	runWorkspaceMatrixEngine(libraryDataString, currentConfig, selectedPosition)
+	-- Reveal choice prompt instead of building instantly
+	PromptModalOverlay.Visible = true
 end)
 
 -- ==========================================================================
@@ -753,6 +859,11 @@ local function DownloadGitHubLibrary()
 			CardButton.MouseButton1Click:Connect(function()
 				libraryCanvasSize = tonumber(item.size) or 75
 				libraryDataString = item.data
+				
+				-- Update canvas size badge text and visibility
+				VisualSizeLabel.Text = "[ Size: " .. libraryCanvasSize .. "x" .. libraryCanvasSize .. " ]"
+				VisualSizeLabel.Visible = true
+				
 				task.spawn(RenderSelectedArt)
 			end)
 		end
@@ -760,4 +871,3 @@ local function DownloadGitHubLibrary()
 end
 
 task.spawn(DownloadGitHubLibrary)
-
