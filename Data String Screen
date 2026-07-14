@@ -1,4 +1,4 @@
--- References to the Remotes
+-- Look -- References to the Remotes
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Packages = ReplicatedStorage:WaitForChild("Packages"):WaitForChild("_Index"):WaitForChild("kumarion_knit-rojo@0.2.0"):WaitForChild("knit-rojo"):WaitForChild("Services")
 
@@ -310,6 +310,7 @@ local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
 	-- Location routing adjusts baseline X and Z coordinates exclusively
 	local CENTER_X, CENTER_Z
 	local placementCFrame = CFrame.new(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+	local isFront = (posSetting == "Front")
 	
 	if posSetting == "Middle" then
 		CENTER_X = -49.5
@@ -371,10 +372,15 @@ local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
 		local centerCol = sector.colStart + math.floor(actualSectorCols / 2)
 		
 		local sectorCenterY = START_Y + ((centerRow - 1) * STEP)
-		local sectorCenterZ = START_Z + ((centerCol - 1) * STEP)
+		local centerColOffset = isFront and (centerCol - 1) or (GRID_SIZE - centerCol)
+		local sectorCenterZ = START_Z + (centerColOffset * STEP)
 		
-		-- Leap player root tracking cleanly relative to target wall sector
-		HumanoidRootPart.CFrame = CFrame.new(START_X + 4, sectorCenterY, sectorCenterZ) * CFrame.Angles(0, math.rad(90), 0)
+		-- [ORIENTATION & TELEPORT FIX] 
+		-- Subtracted 4 instead of adding 4 if it's the "Front" layout to keep you on the grass side
+		local xTeleportOffset = isFront and -4 or 4
+		local lookAngle = isFront and math.rad(-90) or math.rad(90)
+		
+		HumanoidRootPart.CFrame = CFrame.new(START_X + xTeleportOffset, sectorCenterY, sectorCenterZ) * CFrame.Angles(0, lookAngle, 0)
 		task.wait(0.12) -- Optimized down from 0.25 to speed up teleports safely
 		
 		-- Loop over sorted layout palette inside workspace cluster
@@ -386,7 +392,8 @@ local function runWorkspaceMatrixEngine(dataString, cfg, posSetting)
 				
 				for col = sector.colStart, sector.colEnd do
 					if imageMatrix[row][col] == targetColor then
-						local currentZ = START_Z + ((col - 1) * STEP)
+						local colOffset = isFront and (col - 1) or (GRID_SIZE - col)
+						local currentZ = START_Z + (colOffset * STEP)
 						
 						if not colorHasBeenEquipped then
 							InventoryRF:InvokeServer("Equip", "SelectedColor", targetColor)
